@@ -1,6 +1,6 @@
 # art
 
-A small gallery of HTML pages, hosted on `art.naurolabs.com`.
+A small gallery of single-file HTML pages, hosted on `art.naurolabs.com`.
 
 Each piece is a single HTML file — no build step, no framework, no backend. Push to `main` and it's live within a minute.
 

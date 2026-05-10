@@ -4,7 +4,7 @@
 
 ## What this is
 
-A small gallery of static HTML pages, hosted on GitHub Pages at `art.naurolabs.com`. Sister project to [`playground`](https://github.com/samoletovs/playground) (kids' HTML games). Both are deliberately **off the NauroLabs platform path** — no Azure SWA, no Functions, no auth, no bundler.
+A small gallery of single-file static HTML pages, hosted on GitHub Pages at `art.naurolabs.com`. Sister project to [`playground`](https://github.com/samoletovs/playground) (kids' HTML games). Both are deliberately **off the NauroLabs platform path** — no Azure SWA, no Functions, no auth, no bundler.
 
 ## Conventions
 
