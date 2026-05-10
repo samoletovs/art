@@ -1,0 +1,16 @@
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+.idea/
+
+# Local server / cache
+.cache/
+*.log
+
+# Secrets — there shouldn't be any in a static gallery, but defense in depth
+.env
+.env.local
+*.local.json
