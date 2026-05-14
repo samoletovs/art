@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="crimson">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Baroque Style</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=IM+Fell+English:ital@0;1&display=swap');
+
+    /* ══════════════════════════════════════
+       BAROQUE COLOR THEMES  — all dark & rich
+       ══════════════════════════════════════ */
+
+    /* ── Crimson (deep red-gold, default) ── */
+    :root,
+    [data-theme="crimson"] {
+      --bg:         #160a06;
+      --bg-tint:    #261410;
+      --bg-mid:     #301a12;
+      --bg-bar:     #3a1e14;
+      --card:       #1e0e08;
+      --accent:     #c89012;
+      --border:     #6a3818;
+      --btn-border: #8a5022;
+      --text-head:  #e8c860;
+      --text:       #d8c4a0;
+      --text-sec:   #b89060;
+      --text-muted: #a07848;
+      --hi-a:       #301408;
+      --hi-b:       #241006;
+      --shadow:     rgba(200,144,18,0.40);
+    }
+
+    /* ── Midnight (deep navy) ── */
+    [data-theme="midnight"] {
+      --bg:         #070c1a;
+      --bg-tint:    #0e1628;
+      --bg-mid:     #141e34;
+      --bg-bar:     #1a263e;
+      --card:       #0a1020;
+      --accent:     #8ab4d8;
+      --border:     #243a5a;
+      --btn-border: #344e74;
+      --text-head:  #c8dcf4;
+      --text:       #a8c0d8;
+      --text-sec:   #7898b4;
+      --text-muted: #6080a0;
+      --hi-a:       #101c30;
+      --hi-b:       #0c1628;
+      --shadow:     rgba(138,180,216,0.30);
+    }
+
+    /* ── Forest (deep velvet green) ── */
+    [data-theme="forest"] {
+      --bg:         #060e08;
+      --bg-tint:    #0e1a10;
+      --bg-mid:     #142018;
+      --bg-bar:     #1a2820;
+      --card:       #0a1209;
+      --accent:     #88c070;
+      --border:     #224428;
+      --btn-border: #305c38;
+      --text-head:  #b0e090;
+      --text:       #90c078;
+      --text-sec:   #68a050;
+      --text-muted: #508040;
+      --hi-a:       #0e1e10;
+      --hi-b:       #0a180c;
+      --shadow:     rgba(136,192,112,0.30);
+    }
+
+    /* ── Gold (dark amber) ── */
+    [data-theme="gold"] {
+      --bg:         #100c02;
+      --bg-tint:    #1e1606;
+      --bg-mid:     #281e0a;
+      --bg-bar:     #30240c;
+      --card:       #160e04;
+      --accent:     #d4a820;
+      --border:     #584010;
+      --btn-border: #785818;
+      --text-head:  #f0d040;
+      --text:       #d4b060;
+      --text-sec:   #a88030;
+      --text-muted: #8a6820;
+      --hi-a:       #261808;
+      --hi-b:       #1e1206;
+      --shadow:     rgba(212,168,32,0.40);
+    }
+
+    /* ══════════════════════
+       BASE STYLES
+       ══════════════════════ */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: 'IM Fell English', Georgia, serif;
+      font-size: 18px;
+      line-height: 1.85;
+      transition: background-color 0.4s, color 0.4s;
+    }
+
+    em { font-style: italic; }
+
+    /* ── Top bar ── */
+    #top-bar {
+      background-color: var(--bg-bar);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center;
+      justify-content: space-between;
+      padding: 0.45rem 1.5rem;
+      font-family: 'Cinzel', serif;
+      font-size: 0.8rem; letter-spacing: 0.12em;
+      transition: background-color 0.4s;
+      flex-wrap: wrap; gap: 0.4rem;
+    }
+    #theme-group, #lang-group { display: flex; align-items: center; gap: 0.3rem; }
+    #top-bar .bar-label { color: var(--text-sec); margin-right: 0.3rem; white-space: nowrap; }
+
+    .swatch {
+      width: 20px; height: 20px; border-radius: 50%;
+      border: 2px solid transparent; cursor: pointer; padding: 0;
+      transition: transform 0.2s, border-color 0.2s; outline: none;
+    }
+    .swatch:hover { transform: scale(1.15); }
+    .swatch.active { border-color: var(--text-head); transform: scale(1.2); }
+    .swatch-crimson  { background: radial-gradient(circle, #8b2010, #3a0808); }
+    .swatch-midnight { background: radial-gradient(circle, #2040a0, #070c1a); }
+    .swatch-forest   { background: radial-gradient(circle, #306020, #060e08); }
+    .swatch-gold     { background: radial-gradient(circle, #806000, #100c02); }
+
+    .lang-btn {
+      background: none; border: 1px solid var(--btn-border);
+      border-radius: 3px; color: var(--text-head); cursor: pointer;
+      font-family: 'Cinzel', serif; font-size: 0.75rem;
+      letter-spacing: 0.12em; padding: 0.15rem 0.55rem;
+      transition: background 0.2s, color 0.2s, border-color 0.4s;
+    }
+    .lang-btn:hover { background: var(--bg-mid); }
+    .lang-btn.active {
+      background: var(--accent); border-color: var(--accent);
+      color: #0e0804; /* dark text on bright accent */
+    }
+
+    /* ── Ornament ── */
+    .ornament {
+      text-align: center; font-size: 1.6rem;
+      color: var(--accent); letter-spacing: 0.4em;
+      margin: 1.2rem 0; user-select: none;
+      transition: color 0.4s;
+      font-family: serif;
+    }
+
+    /* ── Gold rule lines ── */
+    .gold-rule {
+      display: block; height: 1px;
+      background: linear-gradient(to right, transparent, var(--accent), transparent);
+      width: 70%; margin: 0 auto;
+      transition: background 0.4s;
+    }
+
+    /* ── Header ── */
+    header {
+      background: linear-gradient(to bottom, var(--bg-tint), var(--bg));
+      text-align: center; padding: 4rem 2rem 3rem;
+      border-bottom: 1px solid var(--border);
+      transition: background 0.4s, border-color 0.4s;
+    }
+    header h1 {
+      font-family: 'Cinzel', serif;
+      font-weight: 600; font-size: 4.5rem;
+      letter-spacing: 0.25em; color: var(--text-head);
+      text-transform: uppercase; margin: 1.2rem 0 0.6rem;
+      text-shadow: 0 0 40px rgba(200,144,18,0.25);
+      transition: color 0.4s;
+    }
+    header .subtitle {
+      font-family: 'IM Fell English', serif;
+      font-style: italic; font-size: 1.15rem;
+      color: var(--text-sec); letter-spacing: 0.04em;
+      transition: color 0.4s;
+    }
+
+    /* ── Nav ── */
+    nav {
+      background-color: var(--bg-mid); border-bottom: 1px solid var(--border);
+      text-align: center; padding: 0.8rem;
+      transition: background-color 0.4s, border-color 0.4s;
+    }
+    nav a {
+      color: var(--text-head); text-decoration: none; margin: 0 1.4rem;
+      font-family: 'Cinzel', serif; font-size: 0.8rem;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    nav a:hover { color: var(--accent); }
+
+    /* ── Hero image ── */
+    .hero-figure {
+      margin: 0; line-height: 0; overflow: hidden;
+      height: 380px; position: relative;
+    }
+    .hero-figure img {
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: center 40%; display: block;
+      filter: brightness(0.85) contrast(1.1);
+    }
+    .hero-figure figcaption {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.75), transparent);
+      color: #e8d8b0;
+      font-family: 'IM Fell English', serif;
+      font-size: 0.84rem; font-style: italic;
+      text-align: center; padding: 1.5rem 1rem 0.6rem;
+    }
+
+    /* ── Main ── */
+    main { max-width: 860px; margin: 0 auto; padding: 3rem 2rem; }
+    section { margin-bottom: 4rem; overflow: auto; }
+
+    h2 {
+      font-family: 'Cinzel', serif;
+      font-weight: 400; font-size: 1.7rem;
+      color: var(--text-head); letter-spacing: 0.18em;
+      text-transform: uppercase;
+      padding-bottom: 0.8rem; margin-bottom: 1.5rem;
+      position: relative;
+      transition: color 0.4s;
+    }
+    h2::after {
+      content: '';
+      position: absolute; bottom: 0; left: 0;
+      width: 100%; height: 1px;
+      background: linear-gradient(to right, var(--accent), transparent);
+      transition: background 0.4s;
+    }
+
+    p { margin-bottom: 1.2rem; color: var(--text); transition: color 0.4s; }
+
+    .highlight-box {
+      background: linear-gradient(135deg, var(--hi-a), var(--hi-b));
+      border-left: 3px solid var(--accent);
+      border-right: 1px solid var(--border);
+      padding: 1.5rem 2rem; margin: 2rem 0;
+      font-style: italic;
+      transition: background 0.4s, border-color 0.4s;
+    }
+    .highlight-box p { margin: 0; font-size: 1.15rem; color: var(--text-head); }
+
+    /* ── Float figure ── */
+    .float-figure { float: right; width: 260px; margin: 0.3rem 0 1.5rem 2rem; }
+    .float-figure img {
+      width: 100%; height: 320px;
+      object-fit: cover; object-position: top center;
+      border: 1px solid var(--border);
+      filter: brightness(0.9) contrast(1.05);
+      display: block;
+      transition: border-color 0.4s;
+    }
+    .float-figure figcaption {
+      font-family: 'IM Fell English', serif;
+      font-size: 0.78rem; font-style: italic;
+      color: var(--text-sec); text-align: center;
+      padding: 0.4rem 0.5rem; background: var(--bg-tint);
+      border: 1px solid var(--border); border-top: none;
+      transition: color 0.4s, background 0.4s, border-color 0.4s;
+    }
+
+    /* ── Painting gallery ── */
+    .img-gallery {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem; margin: 2rem 0;
+    }
+    .img-gallery figure { margin: 0; }
+    .img-gallery img {
+      width: 100%; height: 220px; object-fit: cover;
+      border: 1px solid var(--border); display: block;
+      filter: brightness(0.88) contrast(1.08) saturate(0.9);
+      transition: border-color 0.4s, filter 0.3s;
+    }
+    .img-gallery img:hover { filter: brightness(1) contrast(1.05); }
+    .img-gallery figcaption {
+      font-family: 'IM Fell English', serif;
+      font-size: 0.78rem; font-style: italic;
+      color: var(--text-sec); text-align: center;
+      padding: 0.4rem 0.5rem; background: var(--bg-tint);
+      border: 1px solid var(--border); border-top: none;
+      transition: color 0.4s, background 0.4s, border-color 0.4s;
+    }
+
+    /* ── Feature cards ── */
+    .features-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.2rem; margin: 2rem 0;
+    }
+    .feature-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-top: 2px solid var(--accent);
+      padding: 1.4rem;
+      transition: box-shadow 0.2s, background 0.4s, border-color 0.4s;
+    }
+    .feature-card:hover { box-shadow: 0 6px 28px var(--shadow); }
+    .feature-card h3 {
+      font-family: 'Cinzel', serif; font-weight: 400; font-size: 0.95rem;
+      color: var(--text-head); margin-bottom: 0.7rem;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      transition: color 0.4s;
+    }
+    .feature-card p { font-size: 0.93rem; margin: 0; color: var(--text-muted); }
+
+    /* ── Artists list ── */
+    .artists-list {
+      list-style: none;
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1rem; margin: 1.5rem 0;
+    }
+    .artists-list li {
+      background: var(--card); border: 1px solid var(--border);
+      padding: 1rem 1.2rem; display: flex; gap: 0.9rem; align-items: flex-start;
+      transition: background 0.4s, border-color 0.4s;
+    }
+    .artist-thumb {
+      width: 76px; height: 88px; object-fit: cover; object-position: top;
+      border: 1px solid var(--border); flex-shrink: 0;
+      filter: brightness(0.85) contrast(1.1) saturate(0.85);
+      transition: border-color 0.4s;
+    }
+    .artist-info { flex: 1; min-width: 0; }
+    .artist-name {
+      font-family: 'Cinzel', serif; font-size: 1rem;
+      color: var(--text-head); font-weight: 400;
+      letter-spacing: 0.05em; transition: color 0.4s;
+    }
+    .artist-dates { font-size: 0.84rem; color: var(--text-sec); margin-left: 0.5rem; transition: color 0.4s; }
+    .artist-note { font-family: 'IM Fell English', serif; font-size: 0.9rem; font-style: italic; color: var(--text-muted); margin-top: 0.3rem; transition: color 0.4s; }
+    .music-link {
+      display: inline-flex; align-items: center; gap: 0.35em;
+      font-family: 'Cinzel', serif; font-size: 0.8rem; letter-spacing: 0.08em;
+      color: var(--accent); text-decoration: none;
+      border: 1px solid var(--btn-border); padding: 0.15em 0.6em;
+      margin-top: 0.45rem; transition: background 0.25s, color 0.25s, border-color 0.4s;
+    }
+    .music-link:hover { background: var(--accent); color: var(--bg); }
+    .music-block {
+      background: var(--bg-tint); border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      padding: 1.1rem 1.4rem; margin: 1.8rem 0;
+      transition: background 0.4s, border-color 0.4s;
+    }
+    .music-block p { font-family: 'IM Fell English', serif; font-size: 0.95rem; margin-bottom: 0.8rem; }
+    .music-block .music-links { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+
+    /* ── Timeline ── */
+    .timeline {
+      position: relative; padding-left: 2rem;
+      border-left: 1px solid var(--border); margin: 1.5rem 0;
+      transition: border-color 0.4s;
+    }
+    .timeline-item { position: relative; margin-bottom: 1.8rem; }
+    .timeline-item::before {
+      content: ''; position: absolute; left: -2.4rem; top: 0.55rem;
+      width: 10px; height: 10px; background: var(--accent);
+      border: 2px solid var(--bg);
+      transition: background 0.4s, border-color 0.4s;
+    }
+    .timeline-item .year {
+      font-family: 'Cinzel', serif; font-size: 0.95rem;
+      color: var(--accent); font-weight: 600; letter-spacing: 0.1em;
+      transition: color 0.4s;
+    }
+    .timeline-item p { margin: 0.25rem 0 0; font-size: 0.95rem; }
+
+    /* ── Legacy image ── */
+    .legacy-figure { margin: 2rem 0; }
+    .legacy-figure img {
+      width: 100%; height: 260px; object-fit: cover; object-position: center 50%;
+      border: 1px solid var(--border); display: block;
+      filter: brightness(0.85) contrast(1.1) saturate(0.85);
+      transition: border-color 0.4s;
+    }
+    .legacy-figure figcaption {
+      font-family: 'IM Fell English', serif;
+      font-size: 0.82rem; font-style: italic; color: var(--text-sec);
+      text-align: center; padding: 0.5rem 1rem; background: var(--bg-tint);
+      border: 1px solid var(--border); border-top: none;
+      transition: color 0.4s, background 0.4s, border-color 0.4s;
+    }
+
+    /* ── Footer ── */
+    footer {
+      background: var(--bg-tint);
+      border-top: 1px solid var(--border);
+      text-align: center; padding: 2.5rem;
+      color: var(--text-sec); font-size: 0.9rem;
+      font-family: 'IM Fell English', serif; font-style: italic;
+      transition: background 0.4s, border-color 0.4s, color 0.4s;
+    }
+
+    @media (max-width: 520px) {
+      .float-figure { float: none; width: 100%; margin: 1rem 0 1.5rem; }
+      .float-figure img { height: 240px; }
+      .artist-thumb { width: 58px; height: 68px; }
+      header h1 { font-size: 3rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="top-bar">
+    <div id="theme-group">
+      <span class="bar-label" data-i18n="theme-label">Theme:</span>
+      <button class="swatch swatch-crimson active"  data-theme-btn="crimson"  onclick="setTheme('crimson')"  title="Crimson"></button>
+      <button class="swatch swatch-midnight"        data-theme-btn="midnight" onclick="setTheme('midnight')" title="Midnight"></button>
+      <button class="swatch swatch-forest"          data-theme-btn="forest"   onclick="setTheme('forest')"   title="Forest"></button>
+      <button class="swatch swatch-gold"            data-theme-btn="gold"     onclick="setTheme('gold')"     title="Gold"></button>
+    </div>
+    <div id="lang-group">
+      <span class="bar-label" data-i18n="lang-label">Language:</span>
+      <button class="lang-btn active" onclick="setLang('en')">EN</button>
+      <button class="lang-btn"        onclick="setLang('ru')">RU</button>
+      <button class="lang-btn"        onclick="setLang('lv')">LV</button>
+    </div>
+  </div>
+
+  <header>
+    <span class="gold-rule"></span>
+    <div class="ornament">✦ ❖ ✦</div>
+    <h1 data-i18n="title">Baroque</h1>
+    <p class="subtitle" data-i18n="subtitle">The Art of Drama &amp; Grandeur &mdash; c. 1600&ndash;1750</p>
+    <div class="ornament">✦ ❖ ✦</div>
+    <span class="gold-rule"></span>
+  </header>
+
+  <nav>
+    <a href="#origins"         data-i18n="nav-origins">Origins</a>
+    <a href="#characteristics" data-i18n="nav-char">Characteristics</a>
+    <a href="#artists"         data-i18n="nav-artists">Artists</a>
+    <a href="#timeline"        data-i18n="nav-timeline">Timeline</a>
+    <a href="#legacy"          data-i18n="nav-legacy">Legacy</a>
+  </nav>
+
+  <figure class="hero-figure" id="hero-fig">
+    <img src="https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Rembrandt_van_Rijn_-_De_Nachtwacht.jpg&width=1400"
+         alt="Rembrandt — The Night Watch"
+         onerror="document.getElementById('hero-fig').style.display='none'">
+    <figcaption data-i18n="cap-hero">Rembrandt van Rijn, <em>The Night Watch</em>, 1642. Rijksmuseum, Amsterdam.</figcaption>
+  </figure>
+
+  <main>
+
+    <section id="origins">
+      <h2 data-i18n="origins-h2">Origins</h2>
+
+      <figure class="float-figure">
+        <img src="https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Bernini%27s_%27Ecstasy_of_Saint_Teresa%27_September_2015-2a.jpg&width=400"
+             alt="Bernini — Ecstasy of Saint Teresa"
+             onerror="this.closest('figure').style.display='none'">
+        <figcaption data-i18n="cap-float">Gian Lorenzo Bernini, <em>Ecstasy of Saint Teresa</em>, 1647–1652. Santa Maria della Vittoria, Rome.</figcaption>
+      </figure>
+
+      <p data-i18n="origins-p1">Baroque emerged in Rome around 1600 as an artistic response to the Protestant Reformation. The Catholic Church, seeking to reassert its authority through the Counter-Reformation, commissioned artists to create works of overwhelming dramatic power — works that would move the faithful to tears and awe. From Italy the style spread across Europe, finding different expressions in Flanders, the Dutch Republic, Spain, and France.</p>
+      <p data-i18n="origins-p2">The name "Baroque" likely derives from the Portuguese <em>pérola barroca</em> (irregular pearl), where <em>barroca</em> means rough or uneven, reflecting early critics' view of the style as extravagantly irregular. Today it is recognised as one of the most dynamic and emotionally powerful movements in Western art, encompassing painting, sculpture, architecture, and music.</p>
+      <div class="highlight-box">
+        <p data-i18n="origins-quote">"The Baroque artist does not describe the world — he seizes the viewer by the soul and pulls them inside it."</p>
+      </div>
+    </section>
+
+    <section id="characteristics">
+      <h2 data-i18n="char-h2">Key Characteristics</h2>
+      <p data-i18n="char-intro">Baroque is defined by qualities that stand in radical contrast to the calm harmony of the Renaissance that preceded it:</p>
+      <div class="features-grid">
+        <div class="feature-card">
+          <h3 data-i18n="c1-h">Drama &amp; Movement</h3>
+          <p data-i18n="c1-p">Diagonal compositions, twisting figures, and scenes of intense action replaced the balanced stillness of Renaissance art.</p>
+        </div>
+        <div class="feature-card">
+          <h3 data-i18n="c2-h">Chiaroscuro</h3>
+          <p data-i18n="c2-p">Extreme contrasts of light and shadow — perfected by Caravaggio — created theatrical, psychologically charged effects.</p>
+        </div>
+        <div class="feature-card">
+          <h3 data-i18n="c3-h">Grandeur of Scale</h3>
+          <p data-i18n="c3-p">Monumental architecture, vast ceiling frescoes, and overwhelming decorative programmes conveyed the glory of Church and Crown.</p>
+        </div>
+        <div class="feature-card">
+          <h3 data-i18n="c4-h">Emotional Intensity</h3>
+          <p data-i18n="c4-p">Raw emotion — ecstasy, grief, triumph — was depicted with an immediacy and realism that no earlier style had attempted.</p>
+        </div>
+        <div class="feature-card">
+          <h3 data-i18n="c5-h">Illusionism</h3>
+          <p data-i18n="c5-p">Trompe l'oeil painting and architecture dissolved the boundary between real and depicted space, drawing the viewer into a painted world.</p>
+        </div>
+        <div class="feature-card">
+          <h3 data-i18n="c6-h">Unity of the Arts</h3>
+          <p data-i18n="c6-p">Architecture, painting, sculpture, and ornament fused into a single overwhelming aesthetic — the <em>Gesamtkunstwerk</em> of its age.</p>
+        </div>
+      </div>
+
+      <div class="img-gallery">
+        <figure>
+          <img src="https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Caravaggio_-_La_vocazione_di_san_Matteo.jpg&width=600"
+               alt="Caravaggio — The Calling of Saint Matthew"
+               onerror="this.closest('figure').style.display='none'">
+          <figcaption data-i18n="cap-caravaggio">Caravaggio, <em>The Calling of Saint Matthew</em>, 1599–1600. San Luigi dei Francesi, Rome.</figcaption>
+        </figure>
+        <figure>
+          <img src="https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Piazza_San_Pietro,_Vatican_City_-_April_2007.jpg&width=600"
+               alt="St Peter's Square, Rome"
+               onerror="this.closest('figure').style.display='none'">
+          <figcaption data-i18n="cap-stpeters">Piazza San Pietro, Vatican. Colonnade by Bernini, 1656–1667.</figcaption>
+        </figure>
+        <figure>
+          <img src="https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Peter_Paul_Rubens_-_The_Four_Continents_-_WGA20292.jpg&width=600"
+               alt="Rubens — The Four Continents"
+               onerror="this.closest('figure').style.display='none'">
+          <figcaption data-i18n="cap-rubens-four">Peter Paul Rubens, <em>The Four Continents</em>, c. 1615. Kunsthistorisches Museum, Vienna.</figcaption>
+        </figure>
+        <figure>
+          <img src="https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Las_Meninas,_by_Diego_Vel%C3%A1zquez,_from_Prado_in_Google_Earth.jpg&width=600"
+               alt="Velázquez — Las Meninas"
+               onerror="this.closest('figure').style.display='none'">
+          <figcaption data-i18n="cap-velazquez">Diego Velázquez, <em>Las Meninas</em>, 1656. Museo del Prado, Madrid.</figcaption>
+        </figure>
+        <figure>
+          <img src="https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Artemisia_Gentileschi_-_Judith_Beheading_Holofernes_-_WGA8563.jpg&width=600"
+               alt="Artemisia Gentileschi — Judith Beheading Holofernes"
+               onerror="this.closest('figure').style.display='none'">
+          <figcaption data-i18n="cap-gentileschi">Artemisia Gentileschi, <em>Judith Beheading Holofernes</em>, c. 1612–1613. Museo di Capodimonte, Naples.</figcaption>
+        </figure>
+        <figure>
+          <img src="https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Rembrandt_van_Rijn_-_Self-Portrait_-_Google_Art_Project_(J18qqDfbDR4).jpg&width=600"
+               alt="Rembrandt — Self-Portrait"
+               onerror="this.closest('figure').style.display='none'">
+          <figcaption data-i18n="cap-rembrandt-sp">Rembrandt van Rijn, <em>Self-Portrait</em>, c. 1659. National Gallery of Art, Washington.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section id="artists">
+      <h2 data-i18n="artists-h2">Notable Artists</h2>
+      <p data-i18n="artists-intro">A constellation of painters, sculptors, architects, and composers defined the Baroque across Europe:</p>
+      <ul class="artists-list">
+        <li>
+          <img class="artist-thumb"
+               src="https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Caravaggio_-_La_vocazione_di_san_Matteo.jpg&width=120"
+               alt="Caravaggio" onerror="this.style.display='none'">
+          <div class="artist-info">
+            <div><span class="artist-name">Caravaggio</span><span class="artist-dates">(1571–1610)</span></div>
+            <div class="artist-note" data-i18n="a1-note">Revolutionary Italian painter who invented dramatic chiaroscuro; his radical naturalism transformed Western art overnight.</div>
+          </div>
+        </li>
+        <li>
+          <img class="artist-thumb"
+               src="https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Bernini_David.jpg&width=120"
+               alt="Bernini — David" onerror="this.style.display='none'">
+          <div class="artist-info">
+            <div><span class="artist-name">Gian Lorenzo Bernini</span><span class="artist-dates">(1598–1680)</span></div>
+            <div class="artist-note" data-i18n="a2-note">Supreme sculptor and architect of Baroque Rome; designed St. Peter's colonnade and the Baldachin inside the basilica.</div>
+          </div>
+        </li>
+        <li>
+          <img class="artist-thumb"
+               src="https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Self-portrait_by_Peter_Paul_Rubens.jpg&width=120"
+               alt="Rubens" onerror="this.style.display='none'">
+          <div class="artist-info">
+            <div><span class="artist-name">Peter Paul Rubens</span><span class="artist-dates">(1577–1640)</span></div>
+            <div class="artist-note" data-i18n="a3-note">Flemish master of large-scale exuberant painting; his canvases burst with colour, flesh, and movement.</div>
+          </div>
+        </li>
+        <li>
+          <img class="artist-thumb"
+               src="https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Rembrandt_van_Rijn_-_De_Nachtwacht.jpg&width=120"
+               alt="Rembrandt" onerror="this.style.display='none'">
+          <div class="artist-info">
+            <div><span class="artist-name">Rembrandt van Rijn</span><span class="artist-dates">(1606–1669)</span></div>
+            <div class="artist-note" data-i18n="a4-note">Dutch master of psychological portraiture; his golden light and profound humanity remain unmatched in Western painting.</div>
+          </div>
+        </li>
+        <li>
+          <img class="artist-thumb"
+               src="https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Las_Meninas,_by_Diego_Vel%C3%A1zquez,_from_Prado_in_Google_Earth.jpg&width=120"
+               alt="Velázquez — Las Meninas" onerror="this.style.display='none'">
+          <div class="artist-info">
+            <div><span class="artist-name">Diego Velázquez</span><span class="artist-dates">(1599–1660)</span></div>
+            <div class="artist-note" data-i18n="a5-note">Spanish court painter whose <em>Las Meninas</em> is considered among the greatest paintings ever made.</div>
+          </div>
+        </li>
+        <li>
+          <img class="artist-thumb"
+               src="https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Johann_Sebastian_Bach_by_E.G._Haussmann_1746.jpg&width=120"
+               alt="J. S. Bach" onerror="this.style.display='none'">
+          <div class="artist-info">
+            <div><span class="artist-name">Johann Sebastian Bach</span><span class="artist-dates">(1685–1750)</span></div>
+            <div class="artist-note" data-i18n="a6-note">The summit of Baroque music; his fugues, cantatas, and passions synthesise the entire musical language of the era.</div>
+            <a class="music-link" href="https://imslp.org/wiki/Category:Bach,_Johann_Sebastian" target="_blank" rel="noopener">♪ <span data-i18n="bach-link">Works &amp; Recordings</span></a>
+          </div>
+        </li>
+      </ul>
+    </section>
+
+    <section id="timeline">
+      <h2 data-i18n="tl-h2">Timeline</h2>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="year">c. 1600</div>
+          <p data-i18n="tl-1600">Caravaggio completes the Contarelli Chapel paintings in Rome — Baroque painting is born with a flash of candlelight and shadow.</p>
+        </div>
+        <div class="timeline-item">
+          <div class="year">1623</div>
+          <p data-i18n="tl-1623">Bernini begins the Baldachin of St. Peter's Basilica, the defining monument of Baroque sacred architecture.</p>
+        </div>
+        <div class="timeline-item">
+          <div class="year">1642</div>
+          <p data-i18n="tl-1642">Rembrandt paints <em>The Night Watch</em> — the greatest monument of Dutch Golden Age painting, revolutionary in its dynamism and light.</p>
+        </div>
+        <div class="timeline-item">
+          <div class="year">1656</div>
+          <p data-i18n="tl-1656">Velázquez paints <em>Las Meninas</em> at the Spanish court, a work that will perplex and inspire painters for centuries.</p>
+        </div>
+        <div class="timeline-item">
+          <div class="year">1661</div>
+          <p data-i18n="tl-1661">Louis XIV begins transforming Versailles; it becomes the supreme monument of Baroque royal power and the model for courts across Europe.</p>
+        </div>
+        <div class="timeline-item">
+          <div class="year">1685</div>
+          <p data-i18n="tl-1685">Birth of Johann Sebastian Bach and George Frideric Handel — the two composers who will bring Baroque music to its pinnacle.</p>
+        </div>
+        <div class="timeline-item">
+          <div class="year">c. 1720</div>
+          <p data-i18n="tl-1720">Rococo emerges in Paris as a reaction against Baroque grandeur; the era of ornament and intimacy gradually displaces dramatic gravity.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="legacy">
+      <h2 data-i18n="leg-h2">Legacy</h2>
+      <p data-i18n="leg-p1">The Baroque left an indelible mark on Western culture. Its language of dramatic light and shadow influenced painters from Eugène Delacroix to Artemisia Gentileschi; in the 20th century, Caravaggio's chiaroscuro became the visual grammar of cinema noir and modern photography.</p>
+      <p data-i18n="leg-p2">In music, Bach's polyphonic architecture underpins virtually all subsequent Western harmonic tradition. Handel's oratorios, Vivaldi's concertos, and Purcell's operas continue to fill concert halls worldwide.</p>
+
+      <div class="music-block">
+        <p data-i18n="music-intro">Listen to Bach's greatest works — freely available at IMSLP, the international library of classical music:</p>
+        <div class="music-links">
+          <a class="music-link" href="https://imslp.org/wiki/The_Well-Tempered_Clavier,_Book_1_(Bach,_Johann_Sebastian)" target="_blank" rel="noopener">♪ <span data-i18n="ml-wtc">Well-Tempered Clavier</span></a>
+          <a class="music-link" href="https://imslp.org/wiki/Goldberg_Variations,_BWV_988_(Bach,_Johann_Sebastian)" target="_blank" rel="noopener">♪ <span data-i18n="ml-goldberg">Goldberg Variations</span></a>
+          <a class="music-link" href="https://imslp.org/wiki/Toccata_and_Fugue_in_D_minor,_BWV_565_(Bach,_Johann_Sebastian)" target="_blank" rel="noopener">♪ <span data-i18n="ml-toccata">Toccata &amp; Fugue in D minor</span></a>
+          <a class="music-link" href="https://imslp.org/wiki/Brandenburg_Concertos_(Bach,_Johann_Sebastian)" target="_blank" rel="noopener">♪ <span data-i18n="ml-brandenburg">Brandenburg Concertos</span></a>
+          <a class="music-link" href="https://imslp.org/wiki/St_Matthew_Passion,_BWV_244_(Bach,_Johann_Sebastian)" target="_blank" rel="noopener">♪ <span data-i18n="ml-passion">St Matthew Passion</span></a>
+        </div>
+      </div>
+
+      <figure class="legacy-figure">
+        <img src="https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Chateau_Versailles_Galerie_des_Glaces.jpg&width=1000"
+             alt="Hall of Mirrors, Versailles"
+             onerror="this.closest('figure').style.display='none'">
+        <figcaption data-i18n="cap-versailles">Galerie des Glaces (Hall of Mirrors), Palace of Versailles, 1678–1684. Architect: Jules Hardouin-Mansart.</figcaption>
+      </figure>
+
+      <figure class="legacy-figure">
+        <img src="https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Baldachin_in_St._Peter%27s_Basilica.jpg&width=1000"
+             alt="Bernini — Baldachin, St Peter's Basilica"
+             onerror="this.closest('figure').style.display='none'">
+        <figcaption data-i18n="cap-baldachin">Gian Lorenzo Bernini, <em>Baldachin</em>, 1623–1634. St Peter's Basilica, Vatican.</figcaption>
+      </figure>
+
+      <p data-i18n="leg-p3">Today Baroque is recognised not as mere excess but as a profound exploration of human emotion and transcendence. Its greatest achievements — the sculptures of Bernini, the fugues of Bach, the portraits of Rembrandt — stand among the supreme accomplishments of human civilisation.</p>
+      <div class="highlight-box">
+        <p data-i18n="leg-quote">"The great Baroque monuments — St. Peter's Square in Rome, the Palace of Versailles, the churches of Bavaria — survive as UNESCO World Heritage Sites, testaments to an age that believed art could touch the infinite."</p>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="ornament">✦</div>
+    <span class="gold-rule" style="display:block;margin-bottom:1rem"></span>
+    <p data-i18n="footer">An overview of the Baroque style &mdash; Europe, c. 1600&ndash;1750</p>
+  </footer>
+
+  <script>
+    const T = {
+      en: {
+        "theme-label": "Theme:", "lang-label": "Language:",
+        "t-crimson": "Crimson", "t-midnight": "Midnight", "t-forest": "Forest", "t-gold": "Gold",
+        "title": "Baroque",
+        "subtitle": "The Art of Drama &amp; Grandeur &mdash; c. 1600&ndash;1750",
+        "nav-origins": "Origins", "nav-char": "Characteristics", "nav-artists": "Artists",
+        "nav-timeline": "Timeline", "nav-legacy": "Legacy",
+        "cap-hero":        "Rembrandt van Rijn, <em>The Night Watch</em>, 1642. Rijksmuseum, Amsterdam.",
+        "cap-float":       "Gian Lorenzo Bernini, <em>Ecstasy of Saint Teresa</em>, 1647–1652. Santa Maria della Vittoria, Rome.",
+        "cap-caravaggio":  "Caravaggio, <em>The Calling of Saint Matthew</em>, 1599–1600. San Luigi dei Francesi, Rome.",
+        "cap-stpeters":    "Piazza San Pietro, Vatican. Colonnade by Bernini, 1656–1667.",
+        "cap-rubens-four": "Peter Paul Rubens, <em>The Four Continents</em>, c. 1615. Kunsthistorisches Museum, Vienna.",
+        "cap-versailles":  "Galerie des Glaces (Hall of Mirrors), Palace of Versailles, 1678–1684.",
+        "cap-velazquez":   "Diego Velázquez, <em>Las Meninas</em>, 1656. Museo del Prado, Madrid.",
+        "cap-gentileschi": "Artemisia Gentileschi, <em>Judith Beheading Holofernes</em>, c. 1612–1613. Museo di Capodimonte, Naples.",
+        "cap-rembrandt-sp":"Rembrandt van Rijn, <em>Self-Portrait</em>, c. 1659. National Gallery of Art, Washington.",
+        "cap-baldachin":   "Gian Lorenzo Bernini, <em>Baldachin</em>, 1623–1634. St Peter's Basilica, Vatican.",
+        "origins-h2": "Origins",
+        "origins-p1": "Baroque emerged in Rome around 1600 as an artistic response to the Protestant Reformation. The Catholic Church, seeking to reassert its authority through the Counter-Reformation, commissioned artists to create works of overwhelming dramatic power — works that would move the faithful to tears and awe. From Italy the style spread across Europe, finding different expressions in Flanders, the Dutch Republic, Spain, and France.",
+        "origins-p2": "The name \"Baroque\" likely derives from the Portuguese <em>pérola barroca</em> (irregular pearl), where <em>barroca</em> means rough or uneven, reflecting early critics' view of the style as extravagantly irregular. Today it is recognised as one of the most dynamic and emotionally powerful movements in Western art, encompassing painting, sculpture, architecture, and music.",
+        "origins-quote": '"The Baroque artist does not describe the world — he seizes the viewer by the soul and pulls them inside it."',
+        "char-h2": "Key Characteristics",
+        "char-intro": "Baroque is defined by qualities that stand in radical contrast to the calm harmony of the Renaissance that preceded it:",
+        "c1-h": "Drama &amp; Movement", "c1-p": "Diagonal compositions, twisting figures, and scenes of intense action replaced the balanced stillness of Renaissance art.",
+        "c2-h": "Chiaroscuro", "c2-p": "Extreme contrasts of light and shadow — perfected by Caravaggio — created theatrical, psychologically charged effects.",
+        "c3-h": "Grandeur of Scale", "c3-p": "Monumental architecture, vast ceiling frescoes, and overwhelming decorative programmes conveyed the glory of Church and Crown.",
+        "c4-h": "Emotional Intensity", "c4-p": "Raw emotion — ecstasy, grief, triumph — was depicted with an immediacy and realism that no earlier style had attempted.",
+        "c5-h": "Illusionism", "c5-p": "Trompe l'oeil painting and architecture dissolved the boundary between real and depicted space, drawing the viewer into a painted world.",
+        "c6-h": "Unity of the Arts", "c6-p": "Architecture, painting, sculpture, and ornament fused into a single overwhelming aesthetic — the <em>Gesamtkunstwerk</em> of its age.",
+        "artists-h2": "Notable Artists",
+        "artists-intro": "A constellation of painters, sculptors, architects, and composers defined the Baroque across Europe:",
+        "a1-note": "Revolutionary Italian painter who invented dramatic chiaroscuro; his radical naturalism transformed Western art overnight.",
+        "a2-note": "Supreme sculptor and architect of Baroque Rome; designed St. Peter's colonnade and the Baldachin inside the basilica.",
+        "a3-note": "Flemish master of large-scale exuberant painting; his canvases burst with colour, flesh, and movement.",
+        "a4-note": "Dutch master of psychological portraiture; his golden light and profound humanity remain unmatched in Western painting.",
+        "a5-note": "Spanish court painter whose <em>Las Meninas</em> is considered among the greatest paintings ever made.",
+        "a6-note": "The summit of Baroque music; his fugues, cantatas, and passions synthesise the entire musical language of the era.",
+        "tl-h2": "Timeline",
+        "tl-1600": "Caravaggio completes the Contarelli Chapel paintings in Rome — Baroque painting is born with a flash of candlelight and shadow.",
+        "tl-1623": "Bernini begins the Baldachin of St. Peter's Basilica, the defining monument of Baroque sacred architecture.",
+        "tl-1642": "Rembrandt paints <em>The Night Watch</em> — the greatest monument of Dutch Golden Age painting, revolutionary in its dynamism and light.",
+        "tl-1656": "Velázquez paints <em>Las Meninas</em> at the Spanish court, a work that will perplex and inspire painters for centuries.",
+        "tl-1661": "Louis XIV begins transforming Versailles; it becomes the supreme monument of Baroque royal power and the model for courts across Europe.",
+        "tl-1685": "Birth of Johann Sebastian Bach and George Frideric Handel — the two composers who will bring Baroque music to its pinnacle.",
+        "tl-1720": "Rococo emerges in Paris as a reaction against Baroque grandeur; the era of ornament and intimacy gradually displaces dramatic gravity.",
+        "leg-h2": "Legacy",
+        "leg-p1": "The Baroque left an indelible mark on Western culture. Its language of dramatic light and shadow influenced painters from Eugène Delacroix to Artemisia Gentileschi; in the 20th century, Caravaggio's chiaroscuro became the visual grammar of cinema noir and modern photography.",
+        "leg-p2": "In music, Bach's polyphonic architecture underpins virtually all subsequent Western harmonic tradition. Handel's oratorios, Vivaldi's concertos, and Purcell's operas continue to fill concert halls worldwide.",
+        "music-intro":    "Listen to Bach's greatest works — freely available at IMSLP, the international library of classical music:",
+        "bach-link":      "Works &amp; Recordings",
+        "ml-wtc":         "Well-Tempered Clavier",
+        "ml-goldberg":    "Goldberg Variations",
+        "ml-toccata":     "Toccata &amp; Fugue in D minor",
+        "ml-brandenburg": "Brandenburg Concertos",
+        "ml-passion":     "St Matthew Passion",
+        "leg-p3": "Today Baroque is recognised not as mere excess but as a profound exploration of human emotion and transcendence. Its greatest achievements — the sculptures of Bernini, the fugues of Bach, the portraits of Rembrandt — stand among the supreme accomplishments of human civilisation.",
+        "leg-quote": '"The great Baroque monuments — St. Peter\'s Square in Rome, the Palace of Versailles, the churches of Bavaria — survive as UNESCO World Heritage Sites, testaments to an age that believed art could touch the infinite."',
+        "footer": "An overview of the Baroque style &mdash; Europe, c. 1600&ndash;1750"
+      },
+
+      ru: {
+        "theme-label": "Тема:", "lang-label": "Язык:",
+        "t-crimson": "Багровый", "t-midnight": "Полночь", "t-forest": "Лесной", "t-gold": "Золото",
+        "title": "Барокко",
+        "subtitle": "Искусство драмы и величия — ок. 1600–1750",
+        "nav-origins": "Истоки", "nav-char": "Характеристики", "nav-artists": "Мастера",
+        "nav-timeline": "Хронология", "nav-legacy": "Наследие",
+        "cap-hero":        "Рембрандт ван Рейн, <em>«Ночной дозор»</em>, 1642. Рейксмюсеум, Амстердам.",
+        "cap-float":       "Джан Лоренцо Бернини, <em>«Экстаз святой Терезы»</em>, 1647–1652. Санта-Мария-делла-Виттория, Рим.",
+        "cap-caravaggio":  "Караваджо, <em>«Призвание апостола Матфея»</em>, 1599–1600. Сан-Луиджи-деи-Франчези, Рим.",
+        "cap-stpeters":    "Площадь Святого Петра, Ватикан. Колоннада Бернини, 1656–1667.",
+        "cap-rubens-four": "Питер Пауль Рубенс, <em>«Четыре части света»</em>, ок. 1615. Музей истории искусств, Вена.",
+        "cap-versailles":  "Зеркальный зал Версальского дворца, 1678–1684. Архитектор: Жюль Ардуэн-Мансар.",
+        "cap-velazquez":   "Диего Веласкес, <em>«Менины»</em>, 1656. Музей Прадо, Мадрид.",
+        "cap-gentileschi": "Артемизия Джентилески, <em>«Юдифь, обезглавливающая Олоферна»</em>, ок. 1612–1613. Музей Каподимонте, Неаполь.",
+        "cap-rembrandt-sp":"Рембрандт ван Рейн, <em>«Автопортрет»</em>, ок. 1659. Национальная галерея искусств, Вашингтон.",
+        "cap-baldachin":   "Джан Лоренцо Бернини, <em>Балдахин</em>, 1623–1634. Собор Святого Петра, Ватикан.",
+        "origins-h2": "Истоки",
+        "origins-p1": "Барокко возникло в Риме около 1600 года как художественный ответ на протестантскую Реформацию. Католическая церковь, стремясь восстановить свой авторитет в ходе Контрреформации, заказывала художникам произведения подавляющей драматической силы — способные потрясать и восхищать верующих. Из Италии стиль распространился по всей Европе, обретая разные выражения во Фландрии, Голландской республике, Испании и Франции.",
+        "origins-p2": "Название «барокко» предположительно происходит от португальского <em>pérola barroca</em> (жемчужина неправильной формы), где <em>barroca</em> означает «шероховатый, неровный». Это отражало взгляд ранних критиков на стиль как чрезмерно вычурный. Сегодня барокко признано одним из наиболее динамичных и эмоционально мощных движений в западном искусстве, охватывающим живопись, скульптуру, архитектуру и музыку.",
+        "origins-quote": "«Художник барокко не описывает мир — он хватает зрителя за душу и втаскивает его внутрь.»",
+        "char-h2": "Ключевые характеристики",
+        "char-intro": "Барокко определяется качествами, резко контрастирующими со спокойной гармонией предшествующего ему Ренессанса:",
+        "c1-h": "Драма и движение", "c1-p": "Диагональные композиции, закрученные фигуры и сцены напряжённого действия пришли на смену уравновешенной неподвижности ренессансного искусства.",
+        "c2-h": "Кьяроскуро", "c2-p": "Резкие контрасты света и тени — доведённые до совершенства Караваджо — создавали театральные, психологически насыщенные эффекты.",
+        "c3-h": "Монументальность", "c3-p": "Грандиозная архитектура, огромные потолочные росписи и подавляющие декоративные программы воплощали славу Церкви и Короны.",
+        "c4-h": "Эмоциональная интенсивность", "c4-p": "Сырые эмоции — экстаз, скорбь, торжество — изображались с непосредственностью и реализмом, неизвестными прежде.",
+        "c5-h": "Иллюзионизм", "c5-p": "Живопись и архитектура в технике тромплёй стирали границу между реальным и изображённым пространством, вовлекая зрителя в живописный мир.",
+        "c6-h": "Синтез искусств", "c6-p": "Архитектура, живопись, скульптура и декор сливались в единый подавляющий эстетический опыт — <em>Gesamtkunstwerk</em> своей эпохи.",
+        "artists-h2": "Выдающиеся мастера",
+        "artists-intro": "Созвездие живописцев, скульпторов, архитекторов и композиторов создало барокко по всей Европе:",
+        "a1-note": "Революционный итальянский живописец, создавший драматическое кьяроскуро; его радикальный натурализм мгновенно преобразил западное искусство.",
+        "a2-note": "Верховный скульптор и архитектор барочного Рима; создал колоннаду площади Святого Петра и Балдахин внутри базилики.",
+        "a3-note": "Фламандский мастер масштабной жизнерадостной живописи; его полотна переполнены цветом, плотью и движением.",
+        "a4-note": "Нидерландский мастер психологического портрета; его золотистый свет и глубокая человечность остаются непревзойдёнными в западной живописи.",
+        "a5-note": "Испанский придворный живописец, чьи «Менины» считаются одним из величайших когда-либо созданных полотен.",
+        "a6-note": "Вершина барочной музыки; его фуги, кантаты и страсти синтезируют весь музыкальный язык эпохи в архитектуру звука.",
+        "tl-h2": "Хронология",
+        "tl-1600": "Караваджо завершает росписи капеллы Контарелли в Риме — барочная живопись рождается во вспышке свечного света и тени.",
+        "tl-1623": "Бернини приступает к работе над Балдахином собора Святого Петра — определяющим памятником барочной сакральной архитектуры.",
+        "tl-1642": "Рембрандт пишет «Ночной дозор» — величайший памятник голландской живописи Золотого века, революционный по динамике и свету.",
+        "tl-1656": "Веласкес пишет «Менины» при испанском дворе — произведение, которое будет озадачивать и вдохновлять живописцев на протяжении столетий.",
+        "tl-1661": "Людовик XIV начинает преобразование Версаля; дворец становится высшим символом барочной королевской власти.",
+        "tl-1685": "Рождение Иоганна Себастьяна Баха и Георга Фридриха Генделя — двух композиторов, которые доведут барочную музыку до вершины.",
+        "tl-1720": "Рококо возникает в Париже как реакция на барочную грандиозность; эпоха орнамента и интимности постепенно вытесняет драматическую серьёзность.",
+        "leg-h2": "Наследие",
+        "leg-p1": "Барокко оставило неизгладимый след в западной культуре. Его язык драматического света и тени повлиял на живописцев от Эжена Делакруа до Артемизии Джентилески; в XX веке кьяроскуро Караваджо стало визуальной грамматикой кино-нуар и современной фотографии.",
+        "leg-p2": "В музыке полифоническая архитектура Баха лежит в основе всей последующей западной гармонической традиции. Оратории Генделя, концерты Вивальди и оперы Пёрселла по сей день заполняют концертные залы.",
+        "music-intro":    "Слушайте величайшие произведения Баха — свободно доступны на IMSLP, международной библиотеке классической музыки:",
+        "bach-link":      "Произведения и записи",
+        "ml-wtc":         "Хорошо темперированный клавир",
+        "ml-goldberg":    "Гольдберг-вариации",
+        "ml-toccata":     "Токката и фуга ре минор",
+        "ml-brandenburg": "Бранденбургские концерты",
+        "ml-passion":     "Страсти по Матфею",
+        "leg-p3": "Сегодня барокко признано не просто пышностью, но глубоким исследованием человеческой эмоции и трансцендентности. Его величайшие достижения — скульптуры Бернини, фуги Баха, портреты Рембрандта — входят в число высших свершений человеческой цивилизации.",
+        "leg-quote": "«Великие памятники барокко — площадь Святого Петра в Риме, Версальский дворец, баварские церкви — сохранились как объекты Всемирного наследия ЮНЕСКО, свидетельства эпохи, верившей, что искусство способно прикоснуться к бесконечному.»",
+        "footer": "Обзор стиля барокко — Европа, ок. 1600–1750"
+      },
+
+      lv: {
+        "theme-label": "Krāsa:", "lang-label": "Valoda:",
+        "t-crimson": "Karmīns", "t-midnight": "Pusnakts", "t-forest": "Meža zaļš", "t-gold": "Zelts",
+        "title": "Baroks",
+        "subtitle": "Drāmas un grandiozes māksla — ap 1600.–1750. g.",
+        "nav-origins": "Izcelsme", "nav-char": "Raksturojums", "nav-artists": "Mākslinieki",
+        "nav-timeline": "Hronoloģija", "nav-legacy": "Mantojums",
+        "cap-hero":        "Rembrants van Reins, <em>«Nakts sardze»</em>, 1642. Reiksmuseums, Amsterdama.",
+        "cap-float":       "Džans Lorenco Bernīni, <em>«Svētās Terēzes ekstāze»</em>, 1647–1652. Roma.",
+        "cap-caravaggio":  "Karavadžo, <em>«Svētā Mateja aicinājums»</em>, 1599–1600. Roma.",
+        "cap-stpeters":    "Svētā Pētera laukums, Vatikāns. Bernīni kolonnāde, 1656–1667.",
+        "cap-rubens-four": "Pīters Pauls Rubenss, <em>«Četri kontinenti»</em>, ap 1615. g. Vīne.",
+        "cap-versailles":  "Spoguļu galerija, Versaļas pils, 1678–1684.",
+        "cap-velazquez":   "Diego Velaskess, <em>«Las Meninas»</em>, 1656. Prado muzejs, Madride.",
+        "cap-gentileschi": "Artemīzija Džentileski, <em>«Džūdita nogalina Holoferni»</em>, ap 1612.–1613. g. Kapodimonte muzejs, Neapole.",
+        "cap-rembrandt-sp":"Rembrants van Reins, <em>«Pašportrets»</em>, ap 1659. g. Nacionālā mākslas galerija, Vašingtona.",
+        "cap-baldachin":   "Džans Lorenco Bernīni, <em>Baldahīns</em>, 1623–1634. Svētā Pētera bazilika, Vatikāns.",
+        "origins-h2": "Izcelsme",
+        "origins-p1": "Baroks radās Romā ap 1600. gadu kā mākslinieciska reakcija uz protestantu Reformāciju. Katoļu Baznīca pasūtīja māksliniekiem darbus ar milzīgu dramatisku spēku — spējīgus aizkustināt un pārsteidzt ticīgos. No Itālijas stils izplatījās visā Eiropā, iegūstot dažādas izteiksmes Flandrā, Nīderlandē, Spānijā un Francijā.",
+        "origins-p2": "Vārds «baroks» iespējams cēlies no portugāļu <em>pérola barroca</em> (neregulāra pērle), kur <em>barroca</em> nozīmē «raupjš, nevienmērīgs». Mūsdienās baroks tiek atzīts par vienu no dinamiskākajiem un emocionāli spēcīgākajiem kustībām Rietumu mākslā, aptverot glezniecību, tēlniecību, arhitektūru un mūziku.",
+        "origins-quote": "«Baroka mākslinieks nepasauli apraksta — viņš skatītāju satver pie dvēseles un ievilk iekšā.»",
+        "char-h2": "Galvenās iezīmes",
+        "char-intro": "Baroku raksturo īpašības, kas radikāli kontrastē ar iepriekšējās Renesanses mierīgo harmoniju:",
+        "c1-h": "Drāma un kustība", "c1-p": "Diagonālas kompozīcijas un intensīvas darbības ainas nomainīja Renesanses līdzsvaroto miera stāvokli.",
+        "c2-h": "Kjaroskūro", "c2-p": "Gaišuma un ēnas krasi kontrasti — ko pilnveidoja Karavadžo — radīja teatrālus, psiholoģiski saspringtus efektus.",
+        "c3-h": "Grandioze mērogā", "c3-p": "Monumentāla arhitektūra un plašas griestu freskas pauda Baznīcas un Kroņa godību.",
+        "c4-h": "Emocionālā intensitāte", "c4-p": "Neapstrādātas emocijas — ekstāze, bēdas, triumfs — tika attēlotas ar nepieredzētu tūlītējumu un reālismu.",
+        "c5-h": "Iluzionisms", "c5-p": "Tromp-l'œil tehnika izdzēsa robežu starp reālo un attēloto telpu, ievilkot skatītāju gleznainajā pasaulē.",
+        "c6-h": "Mākslu vienotība", "c6-p": "Arhitektūra, glezniecība, tēlniecība un ornaments saplūda vienā pārsātinātā estētiskā pieredzē.",
+        "artists-h2": "Ievērojamākie mākslinieki",
+        "artists-intro": "Gleznotāju, tēlnieku, arhitektu un komponistu plejāde veidoja baroku visā Eiropā:",
+        "a1-note": "Revolucionārs itāļu gleznotājs, kurš izgudrojis dramatisku kjaroskūro; viņa naturālisms pārveidoja Rietumu mākslu vienā naktī.",
+        "a2-note": "Augstākais baroka Romas tēlnieks un arhitekts; projektēja Svētā Pētera kolonnādi un Baldahīnu bazilikas iekšienē.",
+        "a3-note": "Flāmu liela mēroga glezniecības meistars; viņa audekli pārpilni ar krāsu, miesu un kustību.",
+        "a4-note": "Nīderlandes psiholoģiskā portreta meistars; viņa zeltainā gaisma un dziļā cilvēcība ir nepārspētas Rietumu glezniecībā.",
+        "a5-note": "Spānijas galma gleznotājs, kura <em>«Las Meninas»</em> tiek uzskatītas par vienu no vislielākajiem jebkad radītajiem darbiem.",
+        "a6-note": "Baroka mūzikas virsotne; viņa fūgas, kantātes un passiones sintezē visas ēras mūzikas valodu skaņu arhitektūrā.",
+        "tl-h2": "Hronoloģija",
+        "tl-1600": "Karavadžo pabeidz Kontarelli kapelas gleznas Romā — baroka glezniecība piedzimst sveces gaismas un ēnas uzplaiksnījumā.",
+        "tl-1623": "Bernīni sāk Svētā Pētera bazilikas Baldahīnu — noteicošo baroka sakrālās arhitektūras pieminekli.",
+        "tl-1642": "Rembrants gleznoja <em>«Nakts sargi»</em> — lielāko Nīderlandes Zelta laikmeta glezniecības pieminekli.",
+        "tl-1656": "Velaskess gleznoja <em>«Las Meninas»</em> Spānijas galmā — darbu, kas uz gadsimtiem mulsinās gleznotājus.",
+        "tl-1661": "Luijs XIV sāk Versaļas pārveidošanu; tā kļūst par baroka karaliskās varas augstāko pieminekli.",
+        "tl-1685": "Piedzimst Johans Sebastians Bahs un Georgs Frīdrihs Hendelis — divi komponisti, kas baroka mūziku vedīs uz virsotni.",
+        "tl-1720": "Rokoko rodas Parīzē kā reakcija pret baroka grandiozu; ornamentu un intimitātes laikmets aizstāj dramatisko nopietnumu.",
+        "leg-h2": "Mantojums",
+        "leg-p1": "Baroks atstāja neizdzēšamu nospiedumu Rietumu kultūrā. Tā gaismas un ēnas valoda ietekmēja gleznotājus no Delakruā līdz Džentileski; 20. gadsimtā Karavadžo kjaroskūro kļuva par film noir un fotogrāfijas vizuālo gramatiku.",
+        "leg-p2": "Mūzikā Baha polifoniskā arhitektūra ir gandrīz visas turpmākās Rietumu harmoniskās tradīcijas pamats. Hendeļa oratorijas un Vivaldi koncerti joprojām piepilda koncertzāles.",
+        "music-intro":    "Klausieties Baha lielākos darbus — brīvi pieejami IMSLP, starptautiskajā klasiskās mūzikas bibliotēkā:",
+        "bach-link":      "Darbi un ieraksti",
+        "ml-wtc":         "Labi temperētais klaviers",
+        "ml-goldberg":    "Goldberga variācijas",
+        "ml-toccata":     "Tokāta un fūga re minorā",
+        "ml-brandenburg": "Brandenburgas koncerti",
+        "ml-passion":     "Mateja pasija",
+        "leg-p3": "Mūsdienās baroks tiek atzīts kā dziļa cilvēcisko emociju un transcendences izpēte. Tā lielākie sasniegumi — Bernīni tēlniecība, Baha fūgas, Rembrantā portreti — pieder pie cilvēces augstākajiem sasniegumiem.",
+        "leg-quote": "«Lielākie baroka pieminekļi — Svētā Pētera laukums Romā, Versaļas pils, Bavārijas baznīcas — liecina par laikmetu, kas ticēja, ka māksla var pieskārties bezgalīgajam.»",
+        "footer": "Baroka stila pārskats — Eiropa, ap 1600.–1750. g."
+      }
+    };
+
+    let currentLang = 'en';
+
+    function setTheme(theme) {
+      document.documentElement.setAttribute('data-theme', theme);
+      document.querySelectorAll('[data-theme-btn]').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.themeBtn === theme);
+      });
+      updateSwatchTitles();
+    }
+
+    function updateSwatchTitles() {
+      const map = { crimson: 't-crimson', midnight: 't-midnight', forest: 't-forest', gold: 't-gold' };
+      document.querySelectorAll('[data-theme-btn]').forEach(btn => {
+        const key = map[btn.dataset.themeBtn];
+        if (key && T[currentLang][key]) btn.title = T[currentLang][key];
+      });
+    }
+
+    function setLang(lang) {
+      currentLang = lang;
+      document.documentElement.lang = lang;
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (T[lang][key] !== undefined) el.innerHTML = T[lang][key];
+      });
+      document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.textContent === lang.toUpperCase());
+      });
+      updateSwatchTitles();
+    }
+
+    updateSwatchTitles();
+  </script>
+
+</body>
+</html>
