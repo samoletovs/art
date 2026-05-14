@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="ivory">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rococo Style</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=EB+Garamond:ital@0;1&display=swap');
+
+    /* ══════════════════════════════════════
+       COLOR THEMES
+       ══════════════════════════════════════ */
+    :root,
+    [data-theme="ivory"] {
+      --bg:         #fdf6ec;
+      --bg-tint:    #f5e6cf;
+      --bg-mid:     #f0dfc4;
+      --bg-bar:     #ecdfc8;
+      --card:       #fff9f1;
+      --accent:     #b08d6a;
+      --border:     #d9c4a8;
+      --btn-border: #c4a882;
+      --text-head:  #5c3d2e;
+      --text:       #3a2e28;
+      --text-sec:   #8a6a50;
+      --text-muted: #6b5040;
+      --hi-a:       #f9ede0;
+      --hi-b:       #f5e6cf;
+      --shadow:     rgba(176,141,106,0.22);
+    }
+    [data-theme="blue"] {
+      --bg:         #f2f7fc;
+      --bg-tint:    #d8eaf8;
+      --bg-mid:     #ccdff0;
+      --bg-bar:     #bed4e8;
+      --card:       #f5faff;
+      --accent:     #5e8ec0;
+      --border:     #a8c8e0;
+      --btn-border: #90b8d8;
+      --text-head:  #1a3550;
+      --text:       #1e3050;
+      --text-sec:   #3e607a;
+      --text-muted: #4e6878;
+      --hi-a:       #dceef8;
+      --hi-b:       #cce2f5;
+      --shadow:     rgba(94,142,192,0.22);
+    }
+    [data-theme="pink"] {
+      --bg:         #fdf2f4;
+      --bg-tint:    #f5d8de;
+      --bg-mid:     #f0c8d0;
+      --bg-bar:     #eabcc8;
+      --card:       #fff8f9;
+      --accent:     #c05870;
+      --border:     #e0aab8;
+      --btn-border: #d098a8;
+      --text-head:  #5c1828;
+      --text:       #3a1820;
+      --text-sec:   #884858;
+      --text-muted: #784050;
+      --hi-a:       #f8dce4;
+      --hi-b:       #f0d0da;
+      --shadow:     rgba(192,88,112,0.22);
+    }
+    [data-theme="gold"] {
+      --bg:         #fdfbe8;
+      --bg-tint:    #f0e8a8;
+      --bg-mid:     #e8dc90;
+      --bg-bar:     #e0d078;
+      --card:       #fefee8;
+      --accent:     #b88c20;
+      --border:     #d0c060;
+      --btn-border: #c0b050;
+      --text-head:  #3c2c04;
+      --text:       #302404;
+      --text-sec:   #685a20;
+      --text-muted: #5a4c18;
+      --hi-a:       #f5e8a0;
+      --hi-b:       #eedc88;
+      --shadow:     rgba(184,140,32,0.22);
+    }
+
+    /* ══════════════════════
+       BASE
+       ══════════════════════ */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: 'EB Garamond', Georgia, serif;
+      font-size: 18px;
+      line-height: 1.8;
+      transition: background-color 0.35s, color 0.35s;
+    }
+
+    /* ── Top bar ── */
+    #top-bar {
+      background-color: var(--bg-bar);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.45rem 1.5rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.9rem;
+      letter-spacing: 0.08em;
+      transition: background-color 0.35s;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+    #theme-group, #lang-group { display: flex; align-items: center; gap: 0.3rem; }
+    #top-bar .bar-label { color: var(--text-sec); margin-right: 0.3rem; white-space: nowrap; }
+
+    .swatch {
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      border: 2px solid transparent;
+      cursor: pointer; padding: 0;
+      transition: transform 0.2s, border-color 0.2s;
+      outline: none;
+    }
+    .swatch:hover { transform: scale(1.15); }
+    .swatch.active { border-color: var(--text-head); transform: scale(1.2); }
+    .swatch-ivory { background: #f5e6cf; }
+    .swatch-blue  { background: #7399c6; }
+    .swatch-pink  { background: #c47a8a; }
+    .swatch-gold  { background: #c9a830; }
+
+    .lang-btn {
+      background: none;
+      border: 1px solid var(--btn-border);
+      border-radius: 4px;
+      color: var(--text-head);
+      cursor: pointer;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.9rem;
+      letter-spacing: 0.08em;
+      padding: 0.15rem 0.55rem;
+      transition: background 0.2s, color 0.2s, border-color 0.35s;
+    }
+    .lang-btn:hover { background: var(--bg-mid); }
+    .lang-btn.active { background: var(--accent); border-color: var(--accent); color: var(--card); }
+
+    /* ── Ornament ── */
+    .ornament {
+      text-align: center; font-size: 2rem;
+      color: var(--accent); letter-spacing: 0.3em;
+      margin: 1rem 0; user-select: none;
+      transition: color 0.35s;
+    }
+
+    /* ── Header ── */
+    header {
+      background: linear-gradient(to bottom, var(--bg-tint), var(--bg));
+      text-align: center;
+      padding: 4rem 2rem 3rem;
+      border-bottom: 1px solid var(--border);
+      transition: background 0.35s, border-color 0.35s;
+    }
+    header::before, header::after {
+      content: ''; display: block; height: 3px;
+      background: linear-gradient(to right, transparent, var(--accent), transparent);
+      margin: 0 auto; width: 60%;
+      transition: background 0.35s;
+    }
+    header h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300; font-size: 4rem;
+      letter-spacing: 0.15em; color: var(--text-head);
+      text-transform: uppercase; margin: 1.5rem 0 0.5rem;
+      transition: color 0.35s;
+    }
+    header .subtitle {
+      font-style: italic; font-size: 1.2rem;
+      color: var(--text-sec); letter-spacing: 0.05em;
+      transition: color 0.35s;
+    }
+
+    /* ── Nav ── */
+    nav {
+      background-color: var(--bg-mid);
+      border-bottom: 1px solid var(--border);
+      text-align: center; padding: 0.8rem;
+      transition: background-color 0.35s, border-color 0.35s;
+    }
+    nav a {
+      color: var(--text-head); text-decoration: none;
+      margin: 0 1.5rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem; letter-spacing: 0.12em;
+      text-transform: uppercase; transition: color 0.2s;
+    }
+    nav a:hover { color: var(--accent); }
+
+    /* ── Hero image ── */
+    .hero-figure {
+      margin: 0; line-height: 0; overflow: hidden;
+      height: 360px; position: relative;
+    }
+    .hero-figure img {
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: center 30%;
+      display: block;
+    }
+    .hero-figure figcaption {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      background: rgba(0,0,0,0.45);
+      color: #f0e8d8;
+      font-family: 'EB Garamond', serif;
+      font-size: 0.82rem; font-style: italic;
+      text-align: center; padding: 0.5rem 1rem;
+    }
+
+    /* ── Main ── */
+    main { max-width: 860px; margin: 0 auto; padding: 3rem 2rem; }
+
+    section { margin-bottom: 4rem; overflow: auto; }
+
+    h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 400; font-size: 2rem;
+      color: var(--text-head); letter-spacing: 0.08em;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.5rem; margin-bottom: 1.5rem;
+      transition: color 0.35s, border-color 0.35s;
+    }
+
+    p { margin-bottom: 1.2rem; color: var(--text); transition: color 0.35s; }
+
+    .highlight-box {
+      background: linear-gradient(135deg, var(--hi-a), var(--hi-b));
+      border-left: 4px solid var(--accent);
+      border-radius: 0 8px 8px 0;
+      padding: 1.5rem 2rem; margin: 2rem 0;
+      font-style: italic;
+      transition: background 0.35s, border-color 0.35s;
+    }
+    .highlight-box p { margin: 0; font-size: 1.1rem; color: var(--text-head); }
+
+    /* ── Float figure (Origins) ── */
+    .float-figure {
+      float: right; width: 260px;
+      margin: 0.3rem 0 1.5rem 2rem;
+    }
+    .float-figure img {
+      width: 100%; height: 310px;
+      object-fit: cover; object-position: top center;
+      border: 1px solid var(--border);
+      border-radius: 4px; display: block;
+      transition: border-color 0.35s;
+    }
+    .float-figure figcaption {
+      font-size: 0.78rem; font-style: italic;
+      color: var(--text-sec); text-align: center;
+      padding: 0.4rem 0.5rem;
+      background: var(--bg-tint);
+      border: 1px solid var(--border); border-top: none;
+      border-radius: 0 0 4px 4px;
+      transition: color 0.35s, background 0.35s, border-color 0.35s;
+    }
+
+    /* ── Painting gallery (Characteristics) ── */
+    .img-gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem; margin: 2rem 0;
+    }
+    .img-gallery figure { margin: 0; }
+    .img-gallery img {
+      width: 100%; height: 220px;
+      object-fit: cover;
+      border: 1px solid var(--border);
+      border-radius: 4px 4px 0 0; display: block;
+      transition: border-color 0.35s;
+    }
+    .img-gallery figcaption {
+      font-size: 0.78rem; font-style: italic;
+      color: var(--text-sec); text-align: center;
+      padding: 0.4rem 0.5rem;
+      background: var(--bg-tint);
+      border: 1px solid var(--border); border-top: none;
+      border-radius: 0 0 4px 4px;
+      transition: color 0.35s, background 0.35s, border-color 0.35s;
+    }
+
+    /* ── Feature cards ── */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.5rem; margin: 2rem 0;
+    }
+    .feature-card {
+      background: var(--card);
+      border: 1px solid var(--border); border-radius: 8px;
+      padding: 1.5rem;
+      transition: box-shadow 0.2s, background 0.35s, border-color 0.35s;
+    }
+    .feature-card:hover { box-shadow: 0 4px 20px var(--shadow); }
+    .feature-card h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 400; font-size: 1.2rem;
+      color: var(--text-head); margin-bottom: 0.6rem;
+      letter-spacing: 0.05em; transition: color 0.35s;
+    }
+    .feature-card p { font-size: 0.95rem; margin: 0; color: var(--text-muted); }
+
+    /* ── Artists list with thumbnails ── */
+    .artists-list {
+      list-style: none;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1rem; margin: 1.5rem 0;
+    }
+    .artists-list li {
+      background: var(--card);
+      border: 1px solid var(--border); border-radius: 6px;
+      padding: 1rem 1.2rem;
+      display: flex; gap: 0.9rem; align-items: flex-start;
+      transition: background 0.35s, border-color 0.35s;
+    }
+    .artist-thumb {
+      width: 76px; height: 88px;
+      object-fit: cover; object-position: top;
+      border-radius: 3px;
+      border: 1px solid var(--border);
+      flex-shrink: 0;
+      transition: border-color 0.35s;
+    }
+    .artist-info { flex: 1; min-width: 0; }
+    .artist-name { font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; color: var(--text-head); font-weight: 400; transition: color 0.35s; }
+    .artist-dates { font-size: 0.85rem; color: var(--text-sec); margin-left: 0.5rem; transition: color 0.35s; }
+    .artist-note { font-size: 0.9rem; font-style: italic; color: var(--text-muted); margin-top: 0.3rem; transition: color 0.35s; }
+
+    /* ── Timeline ── */
+    .timeline {
+      position: relative; padding-left: 2rem;
+      border-left: 2px solid var(--border);
+      margin: 1.5rem 0;
+      transition: border-color 0.35s;
+    }
+    .timeline-item { position: relative; margin-bottom: 1.8rem; }
+    .timeline-item::before {
+      content: ''; position: absolute;
+      left: -2.45rem; top: 0.5rem;
+      width: 12px; height: 12px;
+      background: var(--accent); border-radius: 50%;
+      border: 2px solid var(--bg);
+      transition: background 0.35s, border-color 0.35s;
+    }
+    .timeline-item .year { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; color: var(--accent); font-weight: 400; transition: color 0.35s; }
+    .timeline-item p { margin: 0.2rem 0 0; font-size: 0.95rem; }
+
+    /* ── Legacy image ── */
+    .legacy-figure { margin: 2rem 0; }
+    .legacy-figure img {
+      width: 100%; height: 260px;
+      object-fit: cover; object-position: center 60%;
+      border: 1px solid var(--border);
+      border-radius: 4px 4px 0 0; display: block;
+      transition: border-color 0.35s;
+    }
+    .legacy-figure figcaption {
+      font-size: 0.82rem; font-style: italic;
+      color: var(--text-sec); text-align: center;
+      padding: 0.5rem 1rem;
+      background: var(--bg-tint);
+      border: 1px solid var(--border); border-top: none;
+      border-radius: 0 0 4px 4px;
+      transition: color 0.35s, background 0.35s, border-color 0.35s;
+    }
+
+    /* ── Footer ── */
+    footer {
+      background: linear-gradient(to top, var(--bg-tint), var(--bg));
+      border-top: 1px solid var(--border);
+      text-align: center; padding: 2.5rem;
+      color: var(--text-sec); font-size: 0.9rem; font-style: italic;
+      transition: background 0.35s, border-color 0.35s, color 0.35s;
+    }
+    footer::before {
+      content: ''; display: block; height: 2px;
+      background: linear-gradient(to right, transparent, var(--accent), transparent);
+      width: 40%; margin: 0 auto 1.5rem;
+      transition: background 0.35s;
+    }
+
+    @media (max-width: 520px) {
+      .float-figure { float: none; width: 100%; margin: 1rem 0 1.5rem; }
+      .float-figure img { height: 240px; }
+      .artist-thumb { width: 58px; height: 68px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="top-bar">
+    <div id="theme-group">
+      <span class="bar-label" data-i18n="theme-label">Theme:</span>
+      <button class="swatch swatch-ivory active" data-theme-btn="ivory" onclick="setTheme('ivory')" title="Ivory"></button>
+      <button class="swatch swatch-blue"         data-theme-btn="blue"  onclick="setTheme('blue')"  title="Powder Blue"></button>
+      <button class="swatch swatch-pink"         data-theme-btn="pink"  onclick="setTheme('pink')"  title="Blush Pink"></button>
+      <button class="swatch swatch-gold"         data-theme-btn="gold"  onclick="setTheme('gold')"  title="Pale Gold"></button>
+    </div>
+    <div id="lang-group">
+      <span class="bar-label" data-i18n="lang-label">Language:</span>
+      <button class="lang-btn active" onclick="setLang('en')">EN</button>
+      <button class="lang-btn"        onclick="setLang('ru')">RU</button>
+      <button class="lang-btn"        onclick="setLang('lv')">LV</button>
+    </div>
+  </div>
+
+  <header>
+    <div class="ornament">❧ ✦ ❧</div>
+    <h1>Rococo</h1>
+    <p class="subtitle" data-i18n="subtitle">The Art of Elegance &amp; Ornament &mdash; c. 1720&ndash;1780</p>
+    <div class="ornament">❧ ✦ ❧</div>
+  </header>
+
+  <nav>
+    <a href="#origins"         data-i18n="nav-origins">Origins</a>
+    <a href="#characteristics" data-i18n="nav-char">Characteristics</a>
+    <a href="#artists"         data-i18n="nav-artists">Artists</a>
+    <a href="#timeline"        data-i18n="nav-timeline">Timeline</a>
+    <a href="#legacy"          data-i18n="nav-legacy">Legacy</a>
+  </nav>
+
+  <!-- Hero painting -->
+  <figure class="hero-figure" id="hero-fig">
+    <img src="https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/L%27Embarquement_pour_Cythere%2C_by_Antoine_Watteau%2C_from_C2RMF_retouched.jpg&width=1400"
+         alt="Antoine Watteau — Embarkation for Cythera"
+         onerror="document.getElementById('hero-fig').style.display='none'">
+    <figcaption data-i18n="cap-hero">Antoine Watteau, <em>L'Embarquement pour Cythère</em>, 1717. Musée du Louvre, Paris.</figcaption>
+  </figure>
+
+  <main>
+
+    <!-- Origins -->
+    <section id="origins">
+      <h2 data-i18n="origins-h2">Origins</h2>
+
+      <figure class="float-figure">
+        <img src="https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Boucher_Marquise_de_Pompadour.jpg&width=400"
+             alt="François Boucher — Marquise de Pompadour"
+             onerror="this.closest('figure').style.display='none'">
+        <figcaption data-i18n="cap-float">François Boucher, <em>Marquise de Pompadour</em>, 1756. Alte Pinakothek, Munich.</figcaption>
+      </figure>
+
+      <p data-i18n="origins-p1">Rococo emerged in early 18th-century France as a reaction against the grandeur and formality of the Baroque style championed under Louis XIV. Where Baroque was weighty and monumental, Rococo was light, playful, and intimate — better suited to the private salons and boudoirs of Parisian aristocracy than to vast royal halls.</p>
+      <p data-i18n="origins-p2">The name derives from <em>rocaille</em> (shell-work) and <em>coquille</em> (shell), referring to the asymmetrical, shell-like decorative motifs that became the style's signature. By the 1730s it had spread across Europe, finding enthusiastic reception in Germany, Austria, and beyond.</p>
+      <div class="highlight-box">
+        <p data-i18n="origins-quote">"To the Rococo artist, beauty was not in solemnity but in delight — in the flutter of a fan, the shimmer of silk, the soft glow of candlelight on gilded plasterwork."</p>
+      </div>
+    </section>
+
+    <!-- Characteristics -->
+    <section id="characteristics">
+      <h2 data-i18n="char-h2">Key Characteristics</h2>
+      <p data-i18n="char-intro">Rococo is defined by a distinctive set of visual and thematic qualities that set it apart from all preceding styles:</p>
+      <div class="features-grid">
+        <div class="feature-card">
+          <h3 data-i18n="c1-h">Asymmetry &amp; Curves</h3>
+          <p data-i18n="c1-p">S-curves, C-scrolls, and asymmetrical compositions replaced the rigid symmetry of Baroque and Classical design.</p>
+        </div>
+        <div class="feature-card">
+          <h3 data-i18n="c2-h">Lightness of Palette</h3>
+          <p data-i18n="c2-p">Soft pastels — powder blue, blush pink, pale gold, ivory — replaced the deep, saturated tones of Baroque painting.</p>
+        </div>
+        <div class="feature-card">
+          <h3 data-i18n="c3-h">Playful Subjects</h3>
+          <p data-i18n="c3-p">Genre scenes of flirtation, garden parties (<em>fêtes galantes</em>), pastoral idylls, and mythological love replaced religious grandeur.</p>
+        </div>
+        <div class="feature-card">
+          <h3 data-i18n="c4-h">Elaborate Ornament</h3>
+          <p data-i18n="c4-p">Gilded stucco, shell-work, scrolling foliage, and delicate lacquerwork covered every interior surface.</p>
+        </div>
+        <div class="feature-card">
+          <h3 data-i18n="c5-h">Intimacy of Scale</h3>
+          <p data-i18n="c5-p">Rococo favored small, private spaces — cabinets, boudoirs, music rooms — over the monumental halls of Baroque palaces.</p>
+        </div>
+        <div class="feature-card">
+          <h3 data-i18n="c6-h">Chinoiserie</h3>
+          <p data-i18n="c6-p">A taste for Chinese-inspired motifs — pagodas, mandarins, exotic birds — added a fashionable exoticism to interiors and porcelain.</p>
+        </div>
+      </div>
+
+      <!-- Painting gallery -->
+      <div class="img-gallery">
+        <figure>
+          <img src="https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Fragonard%2C_The_Swing.jpg&width=600"
+               alt="Fragonard — The Swing"
+               onerror="this.closest('figure').style.display='none'">
+          <figcaption data-i18n="cap-swing">Fragonard, <em>The Swing</em>, 1767. Wallace Collection, London.</figcaption>
+        </figure>
+        <figure>
+          <img src="https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Spiegelsaal_Amalienburg.jpg&width=600"
+               alt="Amalienburg — Mirror Hall"
+               onerror="this.closest('figure').style.display='none'">
+          <figcaption data-i18n="cap-amalienburg">Spiegelsaal, Amalienburg Pavilion, Munich, 1734–1739.</figcaption>
+        </figure>
+        <figure>
+          <img src="https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Fran%C3%A7ois_Boucher_-_The_Toilet_of_Venus_-_WGA02925.jpg&width=600"
+               alt="Boucher — The Toilet of Venus"
+               onerror="this.closest('figure').style.display='none'">
+          <figcaption data-i18n="cap-venus">Boucher, <em>The Toilet of Venus</em>, 1751. Metropolitan Museum, New York.</figcaption>
+        </figure>
+        <figure>
+          <img src="https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Residenz_Wuerzburg_Treppenhaus.jpg&width=600"
+               alt="Tiepolo — Würzburg Residence fresco"
+               onerror="this.closest('figure').style.display='none'">
+          <figcaption data-i18n="cap-wuerzburg">Giovanni Battista Tiepolo, <em>Staircase Ceiling Fresco</em>, 1752–1753. Würzburg Residence.</figcaption>
+        </figure>
+        <figure>
+          <img src="https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Wieskirche-Innenraum1.jpg&width=600"
+               alt="Wieskirche — Interior"
+               onerror="this.closest('figure').style.display='none'">
+          <figcaption data-i18n="cap-wieskirche">Wieskirche, Bavaria, 1745–1754. Architect: Dominikus Zimmermann.</figcaption>
+        </figure>
+        <figure>
+          <img src="https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Pierrot,_formerly_known_as_Gilles_(Watteau).jpg&width=600"
+               alt="Watteau — Pierrot"
+               onerror="this.closest('figure').style.display='none'">
+          <figcaption data-i18n="cap-pierrot">Antoine Watteau, <em>Pierrot</em>, c. 1718–1719. Musée du Louvre, Paris.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- Artists -->
+    <section id="artists">
+      <h2 data-i18n="artists-h2">Notable Artists</h2>
+      <p data-i18n="artists-intro">A constellation of painters, sculptors, and designers defined the Rococo aesthetic across Europe:</p>
+      <ul class="artists-list">
+        <li>
+          <img class="artist-thumb"
+               src="https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/L%27Embarquement_pour_Cythere%2C_by_Antoine_Watteau%2C_from_C2RMF_retouched.jpg&width=120"
+               alt="Watteau"
+               onerror="this.style.display='none'">
+          <div class="artist-info">
+            <div><span class="artist-name">Antoine Watteau</span><span class="artist-dates">(1684–1721)</span></div>
+            <div class="artist-note" data-i18n="a1-note">Inventor of the <em>fête galante</em>; his <em>Embarkation for Cythera</em> defines the mood of early Rococo.</div>
+          </div>
+        </li>
+        <li>
+          <img class="artist-thumb"
+               src="https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Boucher_Marquise_de_Pompadour.jpg&width=120"
+               alt="Boucher"
+               onerror="this.style.display='none'">
+          <div class="artist-info">
+            <div><span class="artist-name">François Boucher</span><span class="artist-dates">(1703–1770)</span></div>
+            <div class="artist-note" data-i18n="a2-note">Court painter to Louis XV; master of sensual mythologies and pastoral scenes in soft, rosy tones.</div>
+          </div>
+        </li>
+        <li>
+          <img class="artist-thumb"
+               src="https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Fragonard%2C_The_Swing.jpg&width=120"
+               alt="Fragonard"
+               onerror="this.style.display='none'">
+          <div class="artist-info">
+            <div><span class="artist-name">Jean-Honoré Fragonard</span><span class="artist-dates">(1732–1806)</span></div>
+            <div class="artist-note" data-i18n="a3-note">Painted the quintessential Rococo image, <em>The Swing</em> — flirtatious, light-drenched, exquisitely frivolous.</div>
+          </div>
+        </li>
+        <li>
+          <img class="artist-thumb"
+               src="https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Giovanni_Battista_Tiepolo_-_The_Investiture_of_Bishop_Harold_as_Duke_of_Franconia_-_WGA22337.jpg&width=120"
+               alt="Tiepolo"
+               onerror="this.style.display='none'">
+          <div class="artist-info">
+            <div><span class="artist-name">Giovanni Battista Tiepolo</span><span class="artist-dates">(1696–1770)</span></div>
+            <div class="artist-note" data-i18n="a4-note">Italy's supreme Rococo fresco painter, bringing luminous theatricality to ceilings across Europe.</div>
+          </div>
+        </li>
+        <li>
+          <img class="artist-thumb"
+               src="https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Marie_Antoinette_Adult.jpg&width=120"
+               alt="Vigée Le Brun — Marie Antoinette"
+               onerror="this.style.display='none'">
+          <div class="artist-info">
+            <div><span class="artist-name">Élisabeth Vigée Le Brun</span><span class="artist-dates">(1755–1842)</span></div>
+            <div class="artist-note" data-i18n="a5-note">Portraitist to Marie Antoinette; captured the grace and refinement of late Rococo court society.</div>
+          </div>
+        </li>
+        <li>
+          <img class="artist-thumb"
+               src="https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Residenz_Wuerzburg_Treppenhaus.jpg&width=120"
+               alt="Würzburg Residence"
+               onerror="this.style.display='none'">
+          <div class="artist-info">
+            <div><span class="artist-name">Balthasar Neumann</span><span class="artist-dates">(1687–1753)</span></div>
+            <div class="artist-note" data-i18n="a6-note">Architect of the Würzburg Residence — the supreme achievement of German Rococo architecture.</div>
+          </div>
+        </li>
+      </ul>
+    </section>
+
+    <!-- Timeline -->
+    <section id="timeline">
+      <h2 data-i18n="tl-h2">Timeline</h2>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="year">c. 1700</div>
+          <p data-i18n="tl-1700">Death of Louis XIV marks the end of official Baroque grandeur; Parisian taste turns toward lightness and comfort.</p>
+        </div>
+        <div class="timeline-item">
+          <div class="year">1717</div>
+          <p data-i18n="tl-1717">Watteau is admitted to the Académie Royale with <em>Embarkation for Cythera</em>, formally creating the <em>fête galante</em> genre.</p>
+        </div>
+        <div class="timeline-item">
+          <div class="year">1720s–1730s</div>
+          <p data-i18n="tl-1720">Rococo spreads to Germany and Austria. The Amalienburg pavilion near Munich (1734–1739) becomes a landmark of the style.</p>
+        </div>
+        <div class="timeline-item">
+          <div class="year">1745</div>
+          <p data-i18n="tl-1745">Madame de Pompadour becomes Louis XV's chief mistress and the most influential patron of Rococo arts in France.</p>
+        </div>
+        <div class="timeline-item">
+          <div class="year">1750s</div>
+          <p data-i18n="tl-1750">Tiepolo completes the Würzburg Residence ceiling frescoes — the largest Rococo fresco in the world.</p>
+        </div>
+        <div class="timeline-item">
+          <div class="year">1766</div>
+          <p data-i18n="tl-1766">Fragonard paints <em>The Swing</em>, the most celebrated image of Rococo sensibility.</p>
+        </div>
+        <div class="timeline-item">
+          <div class="year">1780s</div>
+          <p data-i18n="tl-1780">Neoclassicism rises in reaction to Rococo's perceived frivolity; the style gradually fades from fashion.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Legacy -->
+    <section id="legacy">
+      <h2 data-i18n="leg-h2">Legacy</h2>
+      <p data-i18n="leg-p1">Rococo fell out of favour with the moral seriousness of Neoclassicism and the political upheavals of the French Revolution, which associated its excesses with the discredited aristocracy. Yet its influence has never entirely disappeared.</p>
+      <p data-i18n="leg-p2">The 19th century saw a Rococo Revival in interior decoration and the decorative arts. In the 20th century, its spirit of ornament for ornament's sake re-emerged in Art Nouveau's flowing lines and in the theatrical excess of Hollywood's Golden Age interiors.</p>
+
+      <figure class="legacy-figure">
+        <img src="https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Sanssouci2.jpg&width=1000"
+             alt="Sanssouci Palace, Potsdam"
+             onerror="this.closest('figure').style.display='none'">
+        <figcaption data-i18n="cap-sanssouci">Sanssouci Palace, Potsdam, 1745–1747. Architect: Georg Wenzeslaus von Knobelsdorff.</figcaption>
+      </figure>
+
+      <figure class="legacy-figure">
+        <img src="https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Cuvilliestheater_front.jpg&width=1000"
+             alt="Cuvilliés Theatre, Munich"
+             onerror="this.closest('figure').style.display='none'">
+        <figcaption data-i18n="cap-cuvillies">Cuvilliés Theatre, Munich Residenz, 1751–1755. Architect: François de Cuvilliés the Elder.</figcaption>
+      </figure>
+
+      <p data-i18n="leg-p3">Today Rococo is recognised not as mere decoration but as a coherent artistic philosophy — one that valued pleasure, beauty, and human intimacy as worthy ends in themselves. Its finest works remain among the most technically accomplished and emotionally resonant in Western art.</p>
+      <div class="highlight-box">
+        <p data-i18n="leg-quote">The great Rococo palaces — Versailles's Petit Trianon, the Würzburg Residence, Sanssouci in Potsdam — survive as UNESCO World Heritage Sites, testaments to an age that believed beauty was a civilising force.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="ornament">✦</div>
+    <p data-i18n="footer">An overview of the Rococo style &mdash; France &amp; Europe, c. 1720&ndash;1780</p>
+  </footer>
+
+  <script>
+    const T = {
+      en: {
+        "theme-label": "Theme:", "lang-label": "Language:",
+        "t-ivory": "Ivory", "t-blue": "Powder Blue", "t-pink": "Blush Pink", "t-gold": "Pale Gold",
+        "subtitle": "The Art of Elegance &amp; Ornament &mdash; c. 1720&ndash;1780",
+        "nav-origins": "Origins", "nav-char": "Characteristics", "nav-artists": "Artists",
+        "nav-timeline": "Timeline", "nav-legacy": "Legacy",
+        "cap-hero":       "Antoine Watteau, <em>L'Embarquement pour Cythère</em>, 1717. Musée du Louvre, Paris.",
+        "cap-float":      "François Boucher, <em>Marquise de Pompadour</em>, 1756. Alte Pinakothek, Munich.",
+        "cap-swing":      "Fragonard, <em>The Swing</em>, 1767. Wallace Collection, London.",
+        "cap-amalienburg":"Spiegelsaal, Amalienburg Pavilion, Munich, 1734–1739.",
+        "cap-venus":      "Boucher, <em>The Toilet of Venus</em>, 1751. Metropolitan Museum, New York.",
+        "cap-sanssouci":  "Sanssouci Palace, Potsdam, 1745–1747. Architect: Georg Wenzeslaus von Knobelsdorff.",
+        "cap-wuerzburg":  "Giovanni Battista Tiepolo, <em>Staircase Ceiling Fresco</em>, 1752–1753. Würzburg Residence.",
+        "cap-wieskirche": "Wieskirche (Pilgrimage Church of Wies), Bavaria, 1745–1754. Architect: Dominikus Zimmermann.",
+        "cap-pierrot":    "Antoine Watteau, <em>Pierrot</em>, c. 1718–1719. Musée du Louvre, Paris.",
+        "cap-cuvillies":  "Cuvilliés Theatre, Munich Residenz, 1751–1755. Architect: François de Cuvilliés the Elder.",
+        "origins-h2": "Origins",
+        "origins-p1": "Rococo emerged in early 18th-century France as a reaction against the grandeur and formality of the Baroque style championed under Louis XIV. Where Baroque was weighty and monumental, Rococo was light, playful, and intimate — better suited to the private salons and boudoirs of Parisian aristocracy than to vast royal halls.",
+        "origins-p2": "The name derives from <em>rocaille</em> (shell-work) and <em>coquille</em> (shell), referring to the asymmetrical, shell-like decorative motifs that became the style's signature. By the 1730s it had spread across Europe, finding enthusiastic reception in Germany, Austria, and beyond.",
+        "origins-quote": '"To the Rococo artist, beauty was not in solemnity but in delight — in the flutter of a fan, the shimmer of silk, the soft glow of candlelight on gilded plasterwork."',
+        "char-h2": "Key Characteristics",
+        "char-intro": "Rococo is defined by a distinctive set of visual and thematic qualities that set it apart from all preceding styles:",
+        "c1-h": "Asymmetry &amp; Curves", "c1-p": "S-curves, C-scrolls, and asymmetrical compositions replaced the rigid symmetry of Baroque and Classical design.",
+        "c2-h": "Lightness of Palette", "c2-p": "Soft pastels — powder blue, blush pink, pale gold, ivory — replaced the deep, saturated tones of Baroque painting.",
+        "c3-h": "Playful Subjects", "c3-p": "Genre scenes of flirtation, garden parties (<em>fêtes galantes</em>), pastoral idylls, and mythological love replaced religious grandeur.",
+        "c4-h": "Elaborate Ornament", "c4-p": "Gilded stucco, shell-work, scrolling foliage, and delicate lacquerwork covered every interior surface.",
+        "c5-h": "Intimacy of Scale", "c5-p": "Rococo favored small, private spaces — cabinets, boudoirs, music rooms — over the monumental halls of Baroque palaces.",
+        "c6-h": "Chinoiserie", "c6-p": "A taste for Chinese-inspired motifs — pagodas, mandarins, exotic birds — added a fashionable exoticism to interiors and porcelain.",
+        "artists-h2": "Notable Artists",
+        "artists-intro": "A constellation of painters, sculptors, and designers defined the Rococo aesthetic across Europe:",
+        "a1-note": "Inventor of the <em>fête galante</em>; his <em>Embarkation for Cythera</em> defines the mood of early Rococo.",
+        "a2-note": "Court painter to Louis XV; master of sensual mythologies and pastoral scenes in soft, rosy tones.",
+        "a3-note": "Painted the quintessential Rococo image, <em>The Swing</em> — flirtatious, light-drenched, exquisitely frivolous.",
+        "a4-note": "Italy's supreme Rococo fresco painter, bringing luminous theatricality to ceilings across Europe.",
+        "a5-note": "Portraitist to Marie Antoinette; captured the grace and refinement of late Rococo court society.",
+        "a6-note": "Architect of the Würzburg Residence — the supreme achievement of German Rococo architecture.",
+        "tl-h2": "Timeline",
+        "tl-1700": "Death of Louis XIV marks the end of official Baroque grandeur; Parisian taste turns toward lightness and comfort.",
+        "tl-1717": "Watteau is admitted to the Académie Royale with <em>Embarkation for Cythera</em>, formally creating the <em>fête galante</em> genre.",
+        "tl-1720": "Rococo spreads to Germany and Austria. The Amalienburg pavilion near Munich (1734–1739) becomes a landmark of the style.",
+        "tl-1745": "Madame de Pompadour becomes Louis XV's chief mistress and the most influential patron of Rococo arts in France.",
+        "tl-1750": "Tiepolo completes the Würzburg Residence ceiling frescoes — the largest Rococo fresco in the world.",
+        "tl-1766": "Fragonard paints <em>The Swing</em>, the most celebrated image of Rococo sensibility.",
+        "tl-1780": "Neoclassicism rises in reaction to Rococo's perceived frivolity; the style gradually fades from fashion.",
+        "leg-h2": "Legacy",
+        "leg-p1": "Rococo fell out of favour with the moral seriousness of Neoclassicism and the political upheavals of the French Revolution, which associated its excesses with the discredited aristocracy. Yet its influence has never entirely disappeared.",
+        "leg-p2": "The 19th century saw a Rococo Revival in interior decoration and the decorative arts. In the 20th century, its spirit of ornament for ornament's sake re-emerged in Art Nouveau's flowing lines and in the theatrical excess of Hollywood's Golden Age interiors.",
+        "leg-p3": "Today Rococo is recognised not as mere decoration but as a coherent artistic philosophy — one that valued pleasure, beauty, and human intimacy as worthy ends in themselves. Its finest works remain among the most technically accomplished and emotionally resonant in Western art.",
+        "leg-quote": "The great Rococo palaces — Versailles's Petit Trianon, the Würzburg Residence, Sanssouci in Potsdam — survive as UNESCO World Heritage Sites, testaments to an age that believed beauty was a civilising force.",
+        "footer": "An overview of the Rococo style &mdash; France &amp; Europe, c. 1720&ndash;1780"
+      },
+
+      ru: {
+        "theme-label": "Тема:", "lang-label": "Язык:",
+        "t-ivory": "Слоновая кость", "t-blue": "Пудровый голубой", "t-pink": "Румяный розовый", "t-gold": "Бледное золото",
+        "subtitle": "Искусство элегантности и орнамента — ок. 1720–1780",
+        "nav-origins": "Истоки", "nav-char": "Характеристики", "nav-artists": "Художники",
+        "nav-timeline": "Хронология", "nav-legacy": "Наследие",
+        "cap-hero":       "Антуан Ватто, <em>«Отплытие на Киферу»</em>, 1717. Лувр, Париж.",
+        "cap-float":      "Франсуа Буше, <em>«Маркиза де Помпадур»</em>, 1756. Старая пинакотека, Мюнхен.",
+        "cap-swing":      "Фрагонар, <em>«Качели»</em>, 1767. Коллекция Уолласа, Лондон.",
+        "cap-amalienburg":"Зеркальный зал, павильон Амалиенбург, Мюнхен, 1734–1739.",
+        "cap-venus":      "Буше, <em>«Туалет Венеры»</em>, 1751. Музей Метрополитен, Нью-Йорк.",
+        "cap-sanssouci":  "Дворец Сан-Суси, Потсдам, 1745–1747. Архитектор: Г. В. фон Кнобельсдорф.",
+        "cap-wuerzburg":  "Джованни Батиста Тьеполо, <em>Роспись плафона парадной лестницы</em>, 1752–1753. Вюрцбургская резиденция.",
+        "cap-wieskirche": "Вискирхе (Паломническая церковь Вис), Бавария, 1745–1754. Архитектор: Доминикус Циммерманн.",
+        "cap-pierrot":    "Антуан Ватто, <em>«Пьеро»</em>, ок. 1718–1719. Лувр, Париж.",
+        "cap-cuvillies":  "Театр Кювилье, Мюнхенская резиденция, 1751–1755. Архитектор: Франсуа де Кювилье Старший.",
+        "origins-h2": "Истоки",
+        "origins-p1": "Рококо возникло в начале XVIII века во Франции как реакция на пышность и торжественность барокко, господствовавшего при Людовике XIV. Если барокко было тяжеловесным и монументальным, то рококо — лёгким, игривым и камерным, более подходящим для частных салонов и будуаров парижской аристократии, нежели для обширных королевских залов.",
+        "origins-p2": "Название происходит от слов <em>rocaille</em> (ракушечник) и <em>coquille</em> (раковина), отсылающих к асимметричным декоративным мотивам в форме раковин, ставшим визитной карточкой стиля. К 1730-м годам рококо распространилось по всей Европе, найдя восторженный отклик в Германии, Австрии и других странах.",
+        "origins-quote": "«Для художника рококо красота заключалась не в торжественности, а в наслаждении — в трепете веера, мерцании шёлка, мягком свете свечей на позолоченной лепнине.»",
+        "char-h2": "Ключевые характеристики",
+        "char-intro": "Рококо определяется особым набором визуальных и тематических качеств, отличающих его от всех предшествующих стилей:",
+        "c1-h": "Асимметрия и кривые линии", "c1-p": "S-образные и C-образные завитки, асимметричные композиции пришли на смену строгой симметрии барокко и классицизма.",
+        "c2-h": "Лёгкость палитры", "c2-p": "Мягкие пастельные тона — пудровый голубой, румяный розовый, бледное золото, слоновая кость — сменили насыщенные тёмные цвета барочной живописи.",
+        "c3-h": "Игривые сюжеты", "c3-p": "Сцены флирта, садовых гуляний (<em>fêtes galantes</em>), пасторальные идиллии и мифологические любовные истории вытеснили религиозное величие.",
+        "c4-h": "Пышный орнамент", "c4-p": "Позолоченная лепнина, ракушечная работа, вьющаяся листва и тонкие лаковые изделия покрывали каждую поверхность интерьера.",
+        "c5-h": "Камерный масштаб", "c5-p": "Рококо предпочитало небольшие приватные пространства — кабинеты, будуары, музыкальные комнаты — монументальным залам барочных дворцов.",
+        "c6-h": "Шинуазри", "c6-p": "Увлечение китайскими мотивами — пагодами, мандаринами, экзотическими птицами — привнесло модную экзотику в интерьеры и фарфор.",
+        "artists-h2": "Выдающиеся художники",
+        "artists-intro": "Созвездие живописцев, скульпторов и дизайнеров создало эстетику рококо по всей Европе:",
+        "a1-note": "Создатель жанра <em>fête galante</em>; его «Отплытие на Киферу» определяет настроение раннего рококо.",
+        "a2-note": "Придворный живописец Людовика XV; мастер чувственных мифологий и пасторальных сцен в мягких розоватых тонах.",
+        "a3-note": "Написал квинтэссентный образ рококо — «Качели»: кокетливый, залитый светом, изысканно легкомысленный.",
+        "a4-note": "Крупнейший итальянский мастер фресок рококо, привнёсший светоносную театральность в росписи потолков по всей Европе.",
+        "a5-note": "Портретист Марии-Антуанетты; запечатлел изящество и утончённость позднего придворного рококо.",
+        "a6-note": "Архитектор Вюрцбургской резиденции — высшего достижения немецкой архитектуры рококо.",
+        "tl-h2": "Хронология",
+        "tl-1700": "Смерть Людовика XIV ознаменовала конец официального барочного великолепия; парижский вкус обратился к лёгкости и уюту.",
+        "tl-1717": "Ватто принят в Королевскую академию с картиной «Отплытие на Киферу», официально учредившей жанр <em>fête galante</em>.",
+        "tl-1720": "Рококо распространяется в Германии и Австрии. Павильон Амалиенбург близ Мюнхена (1734–1739) становится образцовым памятником стиля.",
+        "tl-1745": "Мадам де Помпадур становится фавориткой Людовика XV и наиболее влиятельным меценатом искусства рококо во Франции.",
+        "tl-1750": "Тьеполо завершает росписи плафонов Вюрцбургской резиденции — крупнейшей фрески рококо в мире.",
+        "tl-1766": "Фрагонар пишет «Качели» — самый знаменитый образ чувственности рококо.",
+        "tl-1780": "Неоклассицизм поднимается в противовес воспринимаемой легкомысленности рококо; стиль постепенно выходит из моды.",
+        "leg-h2": "Наследие",
+        "leg-p1": "Рококо утратило популярность вместе с моральной серьёзностью неоклассицизма и политическими потрясениями Французской революции, связавшей его излишества с дискредитированной аристократией. Однако его влияние никогда полностью не исчезало.",
+        "leg-p2": "В XIX веке наступило возрождение рококо в интерьерном убранстве и декоративно-прикладном искусстве. В XX веке его дух орнамента ради орнамента вновь проявился в плавных линиях модерна и в театральной роскоши интерьеров Голливуда золотого века.",
+        "leg-p3": "Сегодня рококо признано не просто украшением, но целостной художественной философией — ценившей наслаждение, красоту и человеческую близость как самодостаточные ценности. Лучшие его произведения остаются среди наиболее технически совершенных и эмоционально значимых в западном искусстве.",
+        "leg-quote": "Великие дворцы рококо — Малый Трианон в Версале, Вюрцбургская резиденция, Сан-Суси в Потсдаме — сохранились как объекты Всемирного наследия ЮНЕСКО, свидетельства эпохи, верившей в красоту как цивилизующую силу.",
+        "footer": "Обзор стиля рококо — Франция и Европа, ок. 1720–1780"
+      },
+
+      lv: {
+        "theme-label": "Krāsa:", "lang-label": "Valoda:",
+        "t-ivory": "Ziloņkauls", "t-blue": "Pūderzilā", "t-pink": "Rozā", "t-gold": "Bālzeltā",
+        "subtitle": "Elegances un ornamentu māksla — ap 1720.–1780. g.",
+        "nav-origins": "Izcelsme", "nav-char": "Raksturojums", "nav-artists": "Mākslinieki",
+        "nav-timeline": "Hronoloģija", "nav-legacy": "Mantojums",
+        "cap-hero":       "Antuāns Vato, <em>«Izbraukšana uz Kitēras salu»</em>, 1717. Luvra, Parīze.",
+        "cap-float":      "Fransuā Bušē, <em>«Madame de Pompadour»</em>, 1756. Vecā pinakotēka, Minhene.",
+        "cap-swing":      "Fragonārs, <em>«Šūpoles»</em>, 1767. Uolasas kolekcija, Londona.",
+        "cap-amalienburg":"Spoguļzāle, Amālienburgas paviljons, Minhene, 1734.–1739. g.",
+        "cap-venus":      "Bušē, <em>«Veneras tualete»</em>, 1751. Metropolitēna mākslas muzejs, Ņujorka.",
+        "cap-sanssouci":  "Sanssouci pils, Potsdama, 1745.–1747. g. Arhitekts: G. V. fon Knobelsdo​rfs.",
+        "cap-wuerzburg":  "Džovanni Batista Tjepolo, <em>Kāpņu telpas griestglezna</em>, 1752.–1753. g. Vircburgas rezidence.",
+        "cap-wieskirche": "Wieskirche (Svētceļojumu baznīca Vīsā), Bavārija, 1745.–1754. g. Arhitekts: Dominikus Zimmermanns.",
+        "cap-pierrot":    "Antuāns Vato, <em>«Pjero»</em>, ap 1718.–1719. g. Luvra, Parīze.",
+        "cap-cuvillies":  "Kijilī teātris, Minhenes rezidence, 1751.–1755. g. Arhitekts: Fransuā de Kijilī Vecākais.",
+        "origins-h2": "Izcelsme",
+        "origins-p1": "Rokoko radās 18. gadsimta sākuma Francijā kā reakcija pret baroka stila grandiozitāti un formalitāti, ko veicināja Luijs XIV. Ja baroks bija smagnējs un monumentāls, tad rokoko bija viegls, rotaļīgs un intīms — labāk piemērots Parīzes aristokrātijas privātajiem saloniem un budoāriem, nevis plašajām karaliskajām zālēm.",
+        "origins-p2": "Nosaukums cēlies no vārdiem <em>rocaille</em> (gliemežnīcu darbs) un <em>coquille</em> (gliemežnīca), kas norāda uz asimetriskajiem, gliemežnīcas formas dekoratīvajiem motīviem — stila vizītkarti. Līdz 1730. gadiem rokoko izplatījās visā Eiropā, gūstot entuziastisku uzņemšanu Vācijā, Austrijā un citviet.",
+        "origins-quote": "«Rokoko māksliniekam skaistums slēpās nevis svinīgumā, bet priekā — vēdekļa drebēšanā, zīda mirdzumā, sveces gaismas maigajā atspīdumā uz apzeltīta apmetuma.»",
+        "char-h2": "Galvenās iezīmes",
+        "char-intro": "Rokoko raksturo atšķirīgas vizuālās un tematiskās īpašības, kas to atšķir no visiem iepriekšējiem stiliem:",
+        "c1-h": "Asimetrija un līknes", "c1-p": "S un C formas vijumi un asimetriskas kompozīcijas nomainīja baroka un klasicisma stingro simetriju.",
+        "c2-h": "Gaišā palete", "c2-p": "Maigas pasteļkrāsas — pūderzilā, rozā, bālzelta, ziloņkaula — nomainīja baroka glezniecības tumšos, piesātinātos toņus.",
+        "c3-h": "Rotaļīgi sižeti", "c3-p": "Flirta ainas, dārzu svētki (<em>fêtes galantes</em>), pastorālās idilles un mitoloģiski mīlas stāsti nomainīja reliģisko grandiozu.",
+        "c4-h": "Greznais ornaments", "c4-p": "Apzeltīts štukaturūra darbs, gliemežnīcu rotājumi, vijīgas lapotnes un smalks lakas darbs klāja katru interjera virsmu.",
+        "c5-h": "Intīmais mērogs", "c5-p": "Rokoko deva priekšroku mazām, privātām telpām — kabinetiem, budoāriem, mūzikas istabām — pār baroka pilu monumentālajām zālēm.",
+        "c6-h": "Šinuazrī", "c6-p": "Ķīniešu iedvesmotu motīvu gaume — pagodas, mandarīni, eksotiski putni — piešķīra modīgu eksotiku interjeriem un porcelānam.",
+        "artists-h2": "Ievērojamākie mākslinieki",
+        "artists-intro": "Gleznotāju, tēlnieku un dizaineru plejāde veidoja rokoko estētiku visā Eiropā:",
+        "a1-note": "<em>Fête galante</em> žanra izgudrotājs; viņa <em>Izbraukšana uz Kitēras salu</em> nosaka agrīnā rokoko noskaņu.",
+        "a2-note": "Luija XV galma gleznotājs; juteklisko mitoloģiju un pastorālo ainu meistars maigos, rožainos toņos.",
+        "a3-note": "Gleznoja rokoko kvintesenciālo tēlu <em>Šūpoles</em> — koķetu, gaismas pārpildītu, izprecīgi vieglprātīgu.",
+        "a4-note": "Itālijas izcilākais rokoko fresku gleznotājs, kas visā Eiropā greznoja griestus ar gaismas pilnu teatralitāti.",
+        "a5-note": "Marijas Antuanetes portretiste; attēloja vēlīnās rokoko galma sabiedrības žēlastību un smalkumu.",
+        "a6-note": "Vircburgas rezidences arhitekts — vācu rokoko arhitektūras augstākais sasniegums.",
+        "tl-h2": "Hronoloģija",
+        "tl-1700": "Luija XIV nāve iezīmē oficiālās baroka grandiozes beigas; Parīzes gaume vēršas uz vieglumu un komfortu.",
+        "tl-1717": "Vato uzņem Karaliskajā akadēmijā ar <em>Izbraukšanu uz Kitēras salu</em>, oficiāli radot <em>fête galante</em> žanru.",
+        "tl-1720": "Rokoko izplatās Vācijā un Austrijā. Amālienburgas paviljons pie Minhenes (1734.–1739.) kļūst par stila nozīmīgu pieminekli.",
+        "tl-1745": "Madame de Pompadour kļūst par Luija XV favorīti un ietekmīgāko rokoko mākslas mecenāti Francijā.",
+        "tl-1750": "Tjepollo pabeidz Vircburgas rezidences griestu freskas — lielāko rokoko freski pasaulē.",
+        "tl-1766": "Fragonārs gleznoja <em>Šūpoles</em> — rokoko jutekliskuma slavenāko tēlu.",
+        "tl-1780": "Neoklasicisms rodas kā reakcija pret rokoko uzskatīto vieglprātību; stils pamazām izgaist no modes.",
+        "leg-h2": "Mantojums",
+        "leg-p1": "Rokoko zaudēja popularitāti neoklasicisma morālā nopietnuma un Franču revolūcijas politisko satricinājumu ietekmē, kas saistīja tā pārmērības ar diskreditēto aristokrātiju. Tomēr tā ietekme nekad pilnīgi nepazuda.",
+        "leg-p2": "19. gadsimtā notika rokoko atdzimšana interjera dekorācijā un dekoratīvajā mākslā. 20. gadsimtā tā ornamenta dēļ ornaments gars atkal parādījās jūgendstila plūstošajās līnijās un Holivudas zelta laikmeta interjeru teatrālajā greznumā.",
+        "leg-p3": "Mūsdienās rokoko tiek atzīts ne tikai kā dekorācija, bet kā saskaņota mākslinieciskā filozofija — kas vērtēja prieku, skaistumu un cilvēcisko intimitāti kā pašvērtīgus mērķus. Tā izcilākie darbi joprojām pieder pie tehniskivisskillākajiem un emocionāli rezonējošākajiem Rietumu mākslā.",
+        "leg-quote": "Lielie rokoko pili — Versaļas Mazais Trianons, Vircburgas rezidence, Sanssouci Potsdamā — saglabājušies kā UNESCO Pasaules mantojuma objekti, liecinieki laikmetam, kas ticēja skaistumam kā civilizējošam spēkam.",
+        "footer": "Rokoko stila pārskats — Francija un Eiropa, ap 1720.–1780. g."
+      }
+    };
+
+    let currentLang = 'en';
+
+    function setTheme(theme) {
+      document.documentElement.setAttribute('data-theme', theme);
+      document.querySelectorAll('[data-theme-btn]').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.themeBtn === theme);
+      });
+      updateSwatchTitles();
+    }
+
+    function updateSwatchTitles() {
+      const map = { ivory: 't-ivory', blue: 't-blue', pink: 't-pink', gold: 't-gold' };
+      document.querySelectorAll('[data-theme-btn]').forEach(btn => {
+        const key = map[btn.dataset.themeBtn];
+        if (key && T[currentLang][key]) btn.title = T[currentLang][key];
+      });
+    }
+
+    function setLang(lang) {
+      currentLang = lang;
+      document.documentElement.lang = lang;
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (T[lang][key] !== undefined) el.innerHTML = T[lang][key];
+      });
+      document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.textContent === lang.toUpperCase());
+      });
+      updateSwatchTitles();
+    }
+
+    updateSwatchTitles();
+  </script>
+
+</body>
+</html>
