@@ -1,0 +1,14 @@
+name: art
+purpose: "Gallery of single-file HTML artworks — no build, no backend, pure static art"
+users: "Curators, family, art enthusiasts"
+stage: active
+goals:
+  - "Self-contained single-file HTML art pieces"
+  - "Zero build step, zero dependencies"
+  - "Warm gallery aesthetic (cream background, serif + red accent)"
+  - "GitHub Pages free hosting"
+similar:
+  - "CodePen gallery"
+  - "Artist portfolio sites"
+quality:
+  - responsive
