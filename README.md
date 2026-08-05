@@ -6,6 +6,17 @@ Each piece is a single HTML file — no build step, no framework, no backend. Pu
 
 ## How to add a new piece
 
+### Option A — use the submission form
+
+Open [`submit.html`](submit.html) (locally or at `art.naurolabs.com/submit.html`), fill in a title, meta line, description, and optional content, then hit **Generate files**. It gives you:
+
+- a downloadable, self-contained HTML file for the piece
+- a ready-to-paste `<a class="piece">` card for `index.html`
+
+Everything runs client-side in your browser — nothing is uploaded. Drop the downloaded file in the repo root, paste the card into `index.html`, commit, and push.
+
+### Option B — by hand
+
 1. Save the page as a `.html` file in this folder (e.g. `rooftop-rain.html`)
 2. Open `index.html` and either:
    - Remove the "No pieces yet" empty-state block once the first piece exists, **or**

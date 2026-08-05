@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#fbf7f0" />
+<title>Submit a piece · art · naurolabs</title>
+<meta name="description" content="Generate the HTML file and index card for a new gallery piece." />
+
+<style>
+  :root {
+    --bg: #fbf7f0;
+    --ink: #1c1a17;
+    --muted: #8a847a;
+    --rule: #e6dfd2;
+    --accent: #9E3039;
+    --card: #ffffff;
+    --shadow: 0 1px 2px rgba(28, 26, 23, 0.04), 0 8px 24px rgba(28, 26, 23, 0.06);
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, "Times New Roman", serif;
+    font-size: 17px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; }
+
+  .page {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: clamp(40px, 6vw, 88px) clamp(20px, 4vw, 48px) 64px;
+  }
+
+  header.mast { margin-bottom: clamp(40px, 6vw, 64px); }
+  .eyebrow {
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0 0 12px;
+  }
+  h1 {
+    font-size: clamp(32px, 6vw, 52px);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    margin: 0 0 16px;
+    font-weight: 500;
+  }
+  h1 em { font-style: italic; color: var(--accent); }
+  .lede { max-width: 60ch; color: var(--muted); margin: 0; font-size: 18px; }
+
+  form {
+    background: var(--card);
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    padding: 28px 28px 8px;
+    box-shadow: var(--shadow);
+  }
+
+  label {
+    display: block;
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0 0 6px;
+  }
+  .field { margin-bottom: 20px; }
+  input[type="text"],
+  input[type="number"],
+  textarea {
+    width: 100%;
+    font-family: inherit;
+    font-size: 16px;
+    color: var(--ink);
+    background: var(--bg);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    padding: 10px 12px;
+  }
+  input:focus, textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+  textarea { resize: vertical; min-height: 90px; }
+  .hint {
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 12.5px;
+    color: var(--muted);
+    margin-top: 6px;
+  }
+
+  .actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin: 8px 0 24px;
+  }
+  button {
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 14px;
+    letter-spacing: 0.02em;
+    border: none;
+    border-radius: 3px;
+    padding: 10px 22px;
+    cursor: pointer;
+    transition: opacity 150ms ease;
+  }
+  button.primary { background: var(--accent); color: #fff; }
+  button.secondary { background: transparent; color: var(--ink); border: 1px solid var(--rule); }
+  button:hover { opacity: 0.85; }
+  button:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  h2.section {
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border-top: 1px solid var(--rule);
+    padding-top: 24px;
+    margin: 40px 0 16px;
+    font-weight: 500;
+  }
+
+  pre {
+    background: var(--bg);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    padding: 16px;
+    font-size: 13px;
+    overflow: auto;
+    max-height: 260px;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  footer.foot {
+    margin-top: 64px;
+    padding-top: 24px;
+    border-top: 1px solid var(--rule);
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 12px;
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 13px;
+    color: var(--muted);
+  }
+  footer.foot a {
+    text-decoration: none;
+    border-bottom: 1px solid currentColor;
+    padding-bottom: 1px;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #15130f;
+      --ink: #f3eee3;
+      --muted: #8a847a;
+      --rule: #2a2620;
+      --accent: #c9555e;
+      --card: #1c1a16;
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px rgba(0,0,0,0.4);
+    }
+  }
+</style>
+</head>
+
+<body>
+<main class="page">
+
+  <header class="mast">
+    <p class="eyebrow">art . naurolabs . com</p>
+    <h1>Submit a <em>piece</em>.</h1>
+    <p class="lede">
+      Fill in the details below. This generates the piece's HTML file and the
+      matching gallery card — download both, drop them in the repo, and push.
+      Nothing is uploaded anywhere; everything happens in your browser.
+    </p>
+  </header>
+
+  <form id="submit-form">
+    <div class="field">
+      <label for="title">Title</label>
+      <input type="text" id="title" placeholder="Rooftop Rain" required />
+    </div>
+
+    <div class="field">
+      <label for="filename">File name</label>
+      <input type="text" id="filename" placeholder="rooftop-rain.html" />
+      <p class="hint">Leave blank to auto-generate from the title (kebab-case).</p>
+    </div>
+
+    <div class="field">
+      <label for="meta">Meta line</label>
+      <input type="text" id="meta" placeholder="2026 — generative sketch" />
+      <p class="hint">Shown under the title on the gallery card, e.g. year and medium.</p>
+    </div>
+
+    <div class="field">
+      <label for="description">Description</label>
+      <textarea id="description" placeholder="A short description shown in the preview modal."></textarea>
+    </div>
+
+    <div class="field">
+      <label for="body">Piece content (HTML/CSS/JS)</label>
+      <textarea id="body" style="min-height: 160px" placeholder="&lt;h1&gt;Hello, art&lt;/h1&gt;"></textarea>
+      <p class="hint">This goes inside the generated file's &lt;body&gt;. Leave blank for a starter template.</p>
+    </div>
+
+    <div class="actions">
+      <button type="submit" class="primary">Generate files</button>
+      <button type="button" class="secondary" id="reset-btn">Reset</button>
+    </div>
+  </form>
+
+  <div id="output" hidden>
+    <h2 class="section">Piece file</h2>
+    <div class="actions">
+      <button type="button" class="secondary" id="download-piece">Download HTML file</button>
+    </div>
+    <pre id="piece-preview"></pre>
+
+    <h2 class="section">Gallery card</h2>
+    <p class="hint">Paste this inside the <code>&lt;div class="grid"&gt;</code> in <code>index.html</code>.</p>
+    <div class="actions">
+      <button type="button" class="secondary" id="copy-card">Copy card snippet</button>
+    </div>
+    <pre id="card-preview"></pre>
+  </div>
+
+  <footer class="foot">
+    <a href="index.html">&larr; back to gallery</a>
+    <a href="https://naurolabs.com" rel="noopener">naurolabs.com</a>
+  </footer>
+
+</main>
+
+<script>
+(function () {
+  function slugify(text) {
+    return text
+      .toLowerCase()
+      .trim()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+  }
+
+  function escapeHtml(str) {
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  var form        = document.getElementById('submit-form');
+  var output      = document.getElementById('output');
+  var piecePre    = document.getElementById('piece-preview');
+  var cardPre     = document.getElementById('card-preview');
+  var downloadBtn = document.getElementById('download-piece');
+  var copyBtn     = document.getElementById('copy-card');
+  var resetBtn    = document.getElementById('reset-btn');
+
+  var lastFilename = '';
+  var lastPieceHtml = '';
+
+  function buildPieceHtml(title, body) {
+    var content = body && body.trim()
+      ? body
+      : '<h1>' + escapeHtml(title) + '</h1>\n  <p>Start building your piece here.</p>';
+
+    return '<!doctype html>\n' +
+'<html lang="en">\n' +
+'<head>\n' +
+'<meta charset="utf-8" />\n' +
+'<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />\n' +
+'<title>' + escapeHtml(title) + '</title>\n' +
+'<style>\n' +
+'  html, body { margin: 0; padding: 0; background: #fbf7f0; color: #1c1a17; font-family: Georgia, serif; }\n' +
+'</style>\n' +
+'</head>\n' +
+'<body>\n  ' + content + '\n</body>\n' +
+'</html>\n';
+  }
+
+  function buildCardHtml(filename, title, meta, description) {
+    return '<a class="piece" href="' + escapeHtml(filename) + '"\n' +
+'   data-description="' + escapeHtml(description) + '">\n' +
+'  <div class="num">No. 0X</div>\n' +
+'  <div class="title">' + escapeHtml(title) + '</div>\n' +
+'  <div class="meta">' + escapeHtml(meta) + '</div>\n' +
+'</a>';
+  }
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    var title       = document.getElementById('title').value.trim();
+    var filenameRaw = document.getElementById('filename').value.trim();
+    var meta        = document.getElementById('meta').value.trim();
+    var description = document.getElementById('description').value.trim();
+    var body        = document.getElementById('body').value;
+
+    if (!title) { return; }
+
+    var filename = filenameRaw ? filenameRaw : slugify(title) + '.html';
+    if (!/\.html$/.test(filename)) { filename += '.html'; }
+
+    var pieceHtml = buildPieceHtml(title, body);
+    var cardHtml  = buildCardHtml(filename, title, meta, description);
+
+    lastFilename  = filename;
+    lastPieceHtml = pieceHtml;
+
+    piecePre.textContent = pieceHtml;
+    cardPre.textContent  = cardHtml;
+    output.hidden = false;
+    output.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+
+  downloadBtn.addEventListener('click', function () {
+    if (!lastPieceHtml) { return; }
+    var blob = new Blob([lastPieceHtml], { type: 'text/html' });
+    var url  = URL.createObjectURL(blob);
+    var a    = document.createElement('a');
+    a.href = url;
+    a.download = lastFilename || 'piece.html';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  });
+
+  copyBtn.addEventListener('click', function () {
+    var text = cardPre.textContent;
+    if (!text) { return; }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text);
+    } else {
+      var range = document.createRange();
+      range.selectNode(cardPre);
+      window.getSelection().removeAllRanges();
+      window.getSelection().addRange(range);
+      document.execCommand('copy');
+      window.getSelection().removeAllRanges();
+    }
+  });
+
+  resetBtn.addEventListener('click', function () {
+    form.reset();
+    output.hidden = true;
+    piecePre.textContent = '';
+    cardPre.textContent = '';
+  });
+}());
+</script>
+
+</body>
+</html>
