@@ -207,6 +207,21 @@
     </div>
 
     <div class="field">
+      <label for="year">Year</label>
+      <input type="number" id="year" placeholder="2026" min="0" step="1" required />
+    </div>
+
+    <div class="field">
+      <label for="medium">Medium</label>
+      <input type="text" id="medium" placeholder="Generative sketch" required />
+    </div>
+
+    <div class="field">
+      <label for="artist">Artist</label>
+      <input type="text" id="artist" placeholder="NauroLabs" required />
+    </div>
+
+    <div class="field">
       <label for="description">Description</label>
       <textarea id="description" placeholder="A short description shown in the preview modal."></textarea>
     </div>
@@ -293,8 +308,9 @@
 '</html>\n';
   }
 
-  function buildCardHtml(filename, title, meta, description) {
+ function buildCardHtml(filename, title, meta, description, year, medium, artist) {
     return '<a class="piece" href="' + escapeHtml(filename) + '"\n' +
+'   data-year="' + escapeHtml(year) + '" data-medium="' + escapeHtml(medium) + '" data-artist="' + escapeHtml(artist) + '"\n' +
 '   data-description="' + escapeHtml(description) + '">\n' +
 '  <div class="num">No. 0X</div>\n' +
 '  <div class="title">' + escapeHtml(title) + '</div>\n' +
@@ -309,6 +325,9 @@
     var filenameRaw = document.getElementById('filename').value.trim();
     var meta        = document.getElementById('meta').value.trim();
     var description = document.getElementById('description').value.trim();
+    var year        = document.getElementById('year').value.trim();
+    var medium      = document.getElementById('medium').value.trim();
+    var artist      = document.getElementById('artist').value.trim();
     var body        = document.getElementById('body').value;
 
     if (!title) { return; }
@@ -317,7 +336,7 @@
     if (!/\.html$/.test(filename)) { filename += '.html'; }
 
     var pieceHtml = buildPieceHtml(title, body);
-    var cardHtml  = buildCardHtml(filename, title, meta, description);
+    var cardHtml  = buildCardHtml(filename, title, meta, description, year, medium, artist);
 
     lastFilename  = filename;
     lastPieceHtml = pieceHtml;

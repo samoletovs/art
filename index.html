@@ -80,6 +80,44 @@
     font-weight: 500;
   }
 
+  /* Artwork filters */
+  .filters {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+    margin: -8px 0 24px;
+  }
+  .filter {
+    display: grid;
+    gap: 4px;
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .filter select {
+    width: 100%;
+    appearance: none;
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    background: var(--card);
+    color: var(--ink);
+    padding: 9px 28px 9px 10px;
+    font: inherit;
+    letter-spacing: 0;
+    text-transform: none;
+    cursor: pointer;
+  }
+  .filter-results {
+    grid-column: 1 / -1;
+    margin: 4px 0 0;
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .piece[hidden] { display: none; }
+
   /* Pieces grid */
   .grid {
     display: grid;
@@ -118,6 +156,10 @@
     font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     font-size: 13px;
     color: var(--muted);
+  }
+
+  @media (max-width: 640px) {
+    .filters { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   }
 
   /* Empty state */
@@ -308,6 +350,33 @@
 
   <h2 class="section">Pieces</h2>
 
+  <form class="filters" id="filters">
+    <label class="filter">Year
+      <select id="filter-year" name="year">
+        <option value="">All years</option>
+      </select>
+    </label>
+    <label class="filter">Medium
+      <select id="filter-medium" name="medium">
+        <option value="">All media</option>
+      </select>
+    </label>
+    <label class="filter">Artist
+      <select id="filter-artist" name="artist">
+        <option value="">All artists</option>
+      </select>
+    </label>
+    <label class="filter">Sort
+      <select id="sort-pieces" name="sort">
+        <option value="number">Gallery order</option>
+        <option value="year-desc">Year, newest first</option>
+        <option value="year-asc">Year, oldest first</option>
+        <option value="title">Title, A–Z</option>
+      </select>
+    </label>
+    <p class="filter-results" id="filter-results" aria-live="polite"></p>
+  </form>
+
   <!--
     To add a new piece:
     1. Save the HTML file in this folder, e.g. "rooftop-rain.html"
@@ -317,14 +386,14 @@
 
   <div class="grid">
 
-    <a class="piece" href="rococo.html"
+    <a class="piece" href="rococo.html" data-year="1720" data-medium="Style guide" data-artist="NauroLabs"
        data-description="Lightness, ornament, and wit. Pastel palettes, gilded asymmetry, and the art of pleasure — a curated Rococo style guide with interactive colour themes.">
       <div class="num">No. 01</div>
       <div class="title">Rococo</div>
       <div class="meta">c. 1720–1780 — style guide</div>
     </a>
 
-    <a class="piece" href="baroque.html"
+    <a class="piece" href="baroque.html" data-year="1600" data-medium="Style guide" data-artist="NauroLabs"
        data-description="Drama, grandeur, and chiaroscuro. Rich shadows, golden light, and theatrical intensity — an immersive Baroque style guide with six dark palettes.">
       <div class="num">No. 02</div>
       <div class="title">Baroque</div>
@@ -372,6 +441,69 @@
   var descEl   = document.getElementById('modal-desc');
   var openBtn  = document.getElementById('modal-open-btn');
   var closeBtn = document.getElementById('modal-close');
+  var grid     = document.querySelector('.grid');
+  var cards    = Array.prototype.slice.call(grid.querySelectorAll('a.piece'));
+  var filters  = {
+    year: document.getElementById('filter-year'),
+    medium: document.getElementById('filter-medium'),
+    artist: document.getElementById('filter-artist')
+  };
+  var sort     = document.getElementById('sort-pieces');
+  var results  = document.getElementById('filter-results');
+
+  function addFilterOptions(filter, attribute) {
+    var values = cards.map(function (card) {
+      return card.getAttribute(attribute);
+    }).filter(function (value, index, values) {
+      return values.indexOf(value) === index;
+    }).sort();
+
+    values.forEach(function (value) {
+      var option = document.createElement('option');
+      option.value = value;
+      option.textContent = value;
+      filter.appendChild(option);
+    });
+  }
+
+  function updateGallery() {
+    var visible = cards.filter(function (card) {
+      return Object.keys(filters).every(function (filter) {
+        return !filters[filter].value ||
+          card.getAttribute('data-' + filter) === filters[filter].value;
+      });
+    });
+
+    visible.sort(function (a, b) {
+      if (sort.value === 'title') {
+        return a.querySelector('.title').textContent.localeCompare(b.querySelector('.title').textContent);
+      }
+      if (sort.value === 'year-asc') {
+        return Number(a.getAttribute('data-year')) - Number(b.getAttribute('data-year'));
+      }
+      if (sort.value === 'year-desc') {
+        return Number(b.getAttribute('data-year')) - Number(a.getAttribute('data-year'));
+      }
+      return cards.indexOf(a) - cards.indexOf(b);
+    });
+
+    cards.forEach(function (card) {
+      card.hidden = visible.indexOf(card) === -1;
+    });
+    visible.forEach(function (card) {
+      grid.appendChild(card);
+    });
+    results.textContent = visible.length + (visible.length === 1 ? ' piece' : ' pieces') + ' shown';
+  }
+
+  addFilterOptions(filters.year, 'data-year');
+  addFilterOptions(filters.medium, 'data-medium');
+  addFilterOptions(filters.artist, 'data-artist');
+  Object.keys(filters).forEach(function (filter) {
+    filters[filter].addEventListener('change', updateGallery);
+  });
+  sort.addEventListener('change', updateGallery);
+  updateGallery();
 
   function openModal(card) {
     var href  = card.getAttribute('href');
