@@ -116,13 +116,18 @@
     font-size: 13px;
     color: var(--muted);
   }
-  .piece[hidden] { display: none; }
+  .piece-wrap[hidden] { display: none; }
 
   /* Pieces grid */
   .grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
     gap: 20px;
+  }
+  .piece-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
   }
   .piece {
     display: block;
@@ -132,6 +137,7 @@
     border-radius: 4px;
     padding: 28px 24px;
     min-height: 160px;
+    flex: 1;
     transition: transform 200ms ease, box-shadow 200ms ease, border-color 200ms ease;
   }
   .piece:hover {
@@ -157,6 +163,29 @@
     font-size: 13px;
     color: var(--muted);
   }
+
+  /* Votes */
+  .vote {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    align-self: flex-start;
+    background: transparent;
+    border: 1px solid var(--rule);
+    border-radius: 999px;
+    padding: 5px 14px;
+    cursor: pointer;
+    color: var(--muted);
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 13px;
+    transition: color 150ms ease, border-color 150ms ease;
+  }
+  .vote:hover { color: var(--accent); border-color: var(--accent); }
+  .vote[aria-pressed="true"] {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+  .vote .arrow { font-size: 12px; line-height: 1; }
 
   @media (max-width: 640px) {
     .filters { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -333,6 +362,12 @@
     transition: opacity 150ms ease;
   }
   .modal-open-btn:hover { opacity: 0.85; }
+  .modal-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
 </style>
 </head>
 
@@ -372,6 +407,7 @@
         <option value="year-desc">Year, newest first</option>
         <option value="year-asc">Year, oldest first</option>
         <option value="title">Title, A–Z</option>
+        <option value="votes">Most votes</option>
       </select>
     </label>
     <p class="filter-results" id="filter-results" aria-live="polite"></p>
@@ -425,7 +461,14 @@
       <h2  class="modal-title" id="modal-title"></h2>
       <p   class="modal-meta"  id="modal-meta"></p>
       <p   class="modal-desc"  id="modal-desc"></p>
-      <a   class="modal-open-btn" id="modal-open-btn" href="#">Open piece →</a>
+      <div class="modal-actions">
+        <a   class="modal-open-btn" id="modal-open-btn" href="#">Open piece →</a>
+        <button class="vote" id="modal-vote" type="button" aria-pressed="false">
+          <span class="arrow" aria-hidden="true">▲</span>
+          <span class="vote-label" id="modal-vote-label">Upvote</span>
+          <span class="vote-count" id="modal-vote-count">0</span>
+        </button>
+      </div>
     </div>
   </div>
 </div>
@@ -450,6 +493,84 @@
   };
   var sort     = document.getElementById('sort-pieces');
   var results  = document.getElementById('filter-results');
+  var modalVote      = document.getElementById('modal-vote');
+  var modalVoteCount = document.getElementById('modal-vote-count');
+  var modalVoteLabel = document.getElementById('modal-vote-label');
+  var activeCard     = null;
+
+  /* ── Votes ──────────────────────────────────────────
+     Votes live in localStorage only — this is a sketch gallery,
+     not an app, so there is no backend to tally them. */
+  var STORAGE_KEY = 'art:votes';
+
+  function readVotes() {
+    try {
+      var stored = JSON.parse(window.localStorage.getItem(STORAGE_KEY));
+      return (stored && typeof stored === 'object') ? stored : {};
+    } catch (e) {
+      return {};
+    }
+  }
+
+  function writeVotes(votes) {
+    try {
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(votes));
+    } catch (e) {
+      /* private mode or storage full — votes just stay in memory */
+    }
+  }
+
+  var votes = readVotes();
+
+  function voteKey(card) {
+    return card.getAttribute('href');
+  }
+
+  function voteCount(card) {
+    return votes[voteKey(card)] ? 1 : 0;
+  }
+
+  function renderVote(card) {
+    var button = card.parentNode.querySelector('.vote');
+    var voted  = voteCount(card) === 1;
+    button.setAttribute('aria-pressed', voted ? 'true' : 'false');
+    button.querySelector('.vote-count').textContent = voteCount(card);
+    button.querySelector('.vote-label').textContent = voted ? 'Upvoted' : 'Upvote';
+    button.setAttribute('aria-label',
+      (voted ? 'Remove upvote from ' : 'Upvote ') + card.querySelector('.title').textContent);
+
+    if (activeCard === card) {
+      modalVote.setAttribute('aria-pressed', voted ? 'true' : 'false');
+      modalVoteCount.textContent = voteCount(card);
+      modalVoteLabel.textContent = voted ? 'Upvoted' : 'Upvote';
+    }
+  }
+
+  function toggleVote(card) {
+    if (votes[voteKey(card)]) {
+      delete votes[voteKey(card)];
+    } else {
+      votes[voteKey(card)] = 1;
+    }
+    writeVotes(votes);
+    renderVote(card);
+    if (sort.value === 'votes') { updateGallery(); }
+  }
+
+  cards.forEach(function (card) {
+    var wrap = document.createElement('div');
+    wrap.className = 'piece-wrap';
+    grid.insertBefore(wrap, card);
+    wrap.appendChild(card);
+
+    var button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'vote';
+    button.innerHTML = '<span class="arrow" aria-hidden="true">&#9650;</span>' +
+      '<span class="vote-label">Upvote</span> <span class="vote-count">0</span>';
+    button.addEventListener('click', function () { toggleVote(card); });
+    wrap.appendChild(button);
+  });
 
   function addFilterOptions(filter, attribute) {
     var values = cards.map(function (card) {
@@ -484,14 +605,17 @@
       if (sort.value === 'year-desc') {
         return Number(b.getAttribute('data-year')) - Number(a.getAttribute('data-year'));
       }
+      if (sort.value === 'votes') {
+        return (voteCount(b) - voteCount(a)) || (cards.indexOf(a) - cards.indexOf(b));
+      }
       return cards.indexOf(a) - cards.indexOf(b);
     });
 
     cards.forEach(function (card) {
-      card.hidden = visible.indexOf(card) === -1;
+      card.parentNode.hidden = visible.indexOf(card) === -1;
     });
     visible.forEach(function (card) {
-      grid.appendChild(card);
+      grid.appendChild(card.parentNode);
     });
     results.textContent = visible.length + (visible.length === 1 ? ' piece' : ' pieces') + ' shown';
   }
@@ -503,6 +627,7 @@
     filters[filter].addEventListener('change', updateGallery);
   });
   sort.addEventListener('change', updateGallery);
+  cards.forEach(renderVote);
   updateGallery();
 
   function openModal(card) {
@@ -512,12 +637,14 @@
     var meta  = card.querySelector('.meta').textContent;
     var desc  = card.getAttribute('data-description') || '';
 
+    activeCard = card;
     numEl.textContent  = num;
     titleEl.textContent = title;
     metaEl.textContent = meta;
     descEl.textContent = desc;
     openBtn.setAttribute('href', href);
     iframe.src = href;
+    renderVote(card);
 
     overlay.removeAttribute('hidden');
     document.body.style.overflow = 'hidden';
@@ -528,7 +655,12 @@
     overlay.setAttribute('hidden', '');
     iframe.src = '';
     document.body.style.overflow = '';
+    activeCard = null;
   }
+
+  modalVote.addEventListener('click', function () {
+    if (activeCard) { toggleVote(activeCard); }
+  });
 
   document.querySelectorAll('a.piece').forEach(function (card) {
     card.addEventListener('click', function (e) {
