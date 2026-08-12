@@ -83,7 +83,7 @@
   /* Artwork filters */
   .filters {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: 12px;
     margin: -8px 0 24px;
   }
@@ -108,6 +108,17 @@
     letter-spacing: 0;
     text-transform: none;
     cursor: pointer;
+  }
+  .filter input {
+    width: 100%;
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    background: var(--card);
+    color: var(--ink);
+    padding: 9px 10px;
+    font: inherit;
+    letter-spacing: 0;
+    text-transform: none;
   }
   .filter-results {
     grid-column: 1 / -1;
@@ -186,10 +197,6 @@
     border-color: var(--accent);
   }
   .vote .arrow { font-size: 12px; line-height: 1; }
-
-  @media (max-width: 640px) {
-    .filters { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  }
 
   /* Empty state */
   .empty {
@@ -386,6 +393,9 @@
   <h2 class="section">Pieces</h2>
 
   <form class="filters" id="filters">
+    <label class="filter">Search
+      <input id="search-pieces" name="search" type="search" placeholder="Title, theme, style..." />
+    </label>
     <label class="filter">Year
       <select id="filter-year" name="year">
         <option value="">All years</option>
@@ -399,6 +409,11 @@
     <label class="filter">Artist
       <select id="filter-artist" name="artist">
         <option value="">All artists</option>
+      </select>
+    </label>
+    <label class="filter">Tag
+      <select id="filter-tag" name="tag">
+        <option value="">All tags</option>
       </select>
     </label>
     <label class="filter">Sort
@@ -422,14 +437,14 @@
 
   <div class="grid">
 
-    <a class="piece" href="rococo.html" data-year="1720" data-medium="Style guide" data-artist="NauroLabs"
+    <a class="piece" href="rococo.html" data-year="1720" data-medium="Style guide" data-artist="NauroLabs" data-tags="rococo, ornament, pastel, style guide"
        data-description="Lightness, ornament, and wit. Pastel palettes, gilded asymmetry, and the art of pleasure — a curated Rococo style guide with interactive colour themes.">
       <div class="num">No. 01</div>
       <div class="title">Rococo</div>
       <div class="meta">c. 1720–1780 — style guide</div>
     </a>
 
-    <a class="piece" href="baroque.html" data-year="1600" data-medium="Style guide" data-artist="NauroLabs"
+    <a class="piece" href="baroque.html" data-year="1600" data-medium="Style guide" data-artist="NauroLabs" data-tags="baroque, chiaroscuro, dramatic, style guide"
        data-description="Drama, grandeur, and chiaroscuro. Rich shadows, golden light, and theatrical intensity — an immersive Baroque style guide with six dark palettes.">
       <div class="num">No. 02</div>
       <div class="title">Baroque</div>
@@ -489,8 +504,10 @@
   var filters  = {
     year: document.getElementById('filter-year'),
     medium: document.getElementById('filter-medium'),
-    artist: document.getElementById('filter-artist')
+    artist: document.getElementById('filter-artist'),
+    tag: document.getElementById('filter-tag')
   };
+  var search   = document.getElementById('search-pieces');
   var sort     = document.getElementById('sort-pieces');
   var results  = document.getElementById('filter-results');
   var modalVote      = document.getElementById('modal-vote');
@@ -572,11 +589,23 @@
     wrap.appendChild(button);
   });
 
+  function cardTags(card) {
+    return (card.getAttribute('data-tags') || '')
+      .split(',')
+      .map(function (tag) { return tag.trim(); })
+      .filter(Boolean);
+  }
+
   function addFilterOptions(filter, attribute) {
     var values = cards.map(function (card) {
       return card.getAttribute(attribute);
-    }).filter(function (value, index, values) {
-      return values.indexOf(value) === index;
+    });
+    if (attribute === 'data-tags') {
+      values = cards.map(cardTags).reduce(function (all, tags) { return all.concat(tags); }, []);
+    }
+
+    values = values.filter(Boolean).filter(function (value, index, allValues) {
+      return allValues.indexOf(value) === index;
     }).sort();
 
     values.forEach(function (value) {
@@ -588,11 +617,22 @@
   }
 
   function updateGallery() {
+    var query = (search.value || '').trim().toLowerCase();
     var visible = cards.filter(function (card) {
       return Object.keys(filters).every(function (filter) {
-        return !filters[filter].value ||
-          card.getAttribute('data-' + filter) === filters[filter].value;
-      });
+        if (!filters[filter].value) { return true; }
+        if (filter === 'tag') {
+          return cardTags(card).indexOf(filters[filter].value) !== -1;
+        }
+        return card.getAttribute('data-' + filter) === filters[filter].value;
+      }) && (!query || [
+        card.querySelector('.title').textContent,
+        card.querySelector('.meta').textContent,
+        card.getAttribute('data-description') || '',
+        card.getAttribute('data-tags') || '',
+        card.getAttribute('data-medium') || '',
+        card.getAttribute('data-artist') || ''
+      ].join(' ').toLowerCase().indexOf(query) !== -1);
     });
 
     visible.sort(function (a, b) {
@@ -620,12 +660,19 @@
     results.textContent = visible.length + (visible.length === 1 ? ' piece' : ' pieces') + ' shown';
   }
 
+  cards.forEach(function (card) {
+    if (!card.getAttribute('data-tags') && card.getAttribute('data-medium')) {
+      card.setAttribute('data-tags', card.getAttribute('data-medium'));
+    }
+  });
   addFilterOptions(filters.year, 'data-year');
   addFilterOptions(filters.medium, 'data-medium');
   addFilterOptions(filters.artist, 'data-artist');
+  addFilterOptions(filters.tag, 'data-tags');
   Object.keys(filters).forEach(function (filter) {
     filters[filter].addEventListener('change', updateGallery);
   });
+  search.addEventListener('input', updateGallery);
   sort.addEventListener('change', updateGallery);
   cards.forEach(renderVote);
   updateGallery();

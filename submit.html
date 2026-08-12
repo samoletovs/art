@@ -217,6 +217,12 @@
     </div>
 
     <div class="field">
+      <label for="tags">Tags</label>
+      <input type="text" id="tags" placeholder="rain, generative, ambient" />
+      <p class="hint">Comma-separated tags for discovery filters and search.</p>
+    </div>
+
+    <div class="field">
       <label for="artist">Artist</label>
       <input type="text" id="artist" placeholder="NauroLabs" required />
     </div>
@@ -308,9 +314,10 @@
 '</html>\n';
   }
 
- function buildCardHtml(filename, title, meta, description, year, medium, artist) {
+ function buildCardHtml(filename, title, meta, description, year, medium, artist, tags) {
     return '<a class="piece" href="' + escapeHtml(filename) + '"\n' +
 '   data-year="' + escapeHtml(year) + '" data-medium="' + escapeHtml(medium) + '" data-artist="' + escapeHtml(artist) + '"\n' +
+'   data-tags="' + escapeHtml(tags) + '"\n' +
 '   data-description="' + escapeHtml(description) + '">\n' +
 '  <div class="num">No. 0X</div>\n' +
 '  <div class="title">' + escapeHtml(title) + '</div>\n' +
@@ -327,6 +334,7 @@
     var description = document.getElementById('description').value.trim();
     var year        = document.getElementById('year').value.trim();
     var medium      = document.getElementById('medium').value.trim();
+    var tags        = document.getElementById('tags').value.trim();
     var artist      = document.getElementById('artist').value.trim();
     var body        = document.getElementById('body').value;
 
@@ -336,7 +344,8 @@
     if (!/\.html$/.test(filename)) { filename += '.html'; }
 
     var pieceHtml = buildPieceHtml(title, body);
-    var cardHtml  = buildCardHtml(filename, title, meta, description, year, medium, artist);
+    var cardTags  = tags || medium;
+    var cardHtml  = buildCardHtml(filename, title, meta, description, year, medium, artist, cardTags);
 
     lastFilename  = filename;
     lastPieceHtml = pieceHtml;

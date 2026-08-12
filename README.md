@@ -24,6 +24,7 @@ Everything runs client-side in your browser — nothing is uploaded. Drop the do
      - `href="rooftop-rain.html"` — the filename you just added
      - `<div class="title">…</div>` — what you want shown on the card
      - `<div class="meta">…</div>` — year + short description
+     - `data-tags="rain, ambient, generative"` — comma-separated discovery tags
 3. Commit and push. GitHub Pages publishes automatically.
 
 ```powershell
